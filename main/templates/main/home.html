@@ -6,6 +6,7 @@
 <div class="card p-3">
     <h5>Input Options</h5>
     <form method="POST" action="{% url 'generate_pdf' %}" target="_blank">
+        {% csrf_token %}
         <div class="mb-3">
             <label for="income" class="form-label">Monthly Income</label>
             <input type="number" class="form-control" id="income" placeholder="Enter income">
