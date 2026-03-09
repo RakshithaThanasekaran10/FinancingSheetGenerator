@@ -1,7 +1,42 @@
 from django.shortcuts import render
+from django.http import HttpResponse
+#from django.template.loader import render_to_string
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 
 def home(request):
     """
     Homepage view: renders the skeleton of the finance sheet generator
     """
     return render(request, "main/home.html") 
+
+def generate_pdf(request):
+
+    if request.method == "POST":
+
+        income = float(request.POST.get("income", 0))
+        expenses = float(request.POST.get("expenses", 0))
+        balance = income - expenses
+
+        template = get_template("main/pdf_template.html")
+
+        context = {
+            "income": income,
+            "expenses": expenses,
+            "balance": balance
+        }
+
+        html = template.render(context)
+
+        response = HttpResponse(content_type="application/pdf")
+        response["Content-Disposition"] = "inline; filename=finance_sheet.pdf"
+
+        pisa_status = pisa.CreatePDF(
+            html,
+            dest=response
+        )
+
+        if pisa_status.err:
+            return HttpResponse("Error generating PDF")
+
+        return response
