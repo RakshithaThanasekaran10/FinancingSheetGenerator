@@ -1,55 +1,221 @@
 <!DOCTYPE html>
 <html>
 <head>
-<style>
+<meta charset="utf-8">
 
+<style>
 body {
-    font-family: Arial;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 40px;
+    color: #222;
 }
 
-table {
+h1 {
+    font-size: 22px;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 14px;
+    margin-bottom: 25px;
+}
+
+.contact-table {
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.contact-table td {
+    width: 50%;
+    vertical-align: top;
+}
+
+.contact-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 25px 0 10px 0;
+}
+
+.mortgage-table {
     width: 100%;
     border-collapse: collapse;
+    font-size: 13px;
 }
 
-th, td {
-    border: 1px solid black;
+.mortgage-table th {
+    background: #f2f2f2;
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+.mortgage-table td {
+    border: 1px solid #ccc;
     padding: 8px;
 }
 
-th {
-    background-color: #dddddd;
+.label-col {
+    font-weight: bold;
+    background: #fafafa;
+    width: 25%;
 }
 
+.option-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.footer {
+    margin-top: 40px;
+    font-size: 10px;
+    color: #555;
+}
 </style>
+
 </head>
 
 <body>
 
-<h2>Finance Sheet</h2>
+<!-- PROPERTY HEADER -->
 
-<table>
+<h1>{{ property_address }}</h1>
+<div class="subtitle">
+{{ city }}, {{ province }}, {{ postal_code }}
+</div>
+
+
+<!-- CONTACTS -->
+
+<table class="contact-table">
 <tr>
-<th>Category</th>
-<th>Amount</th>
+
+<td>
+    <div class="contact-name">{{ realtor_name }}</div>
+    <div>{{ realtor_title }}</div>
+    <div>{{ realtor_company }}</div>
+    <div>{{ realtor_phone }}</div>
+    <div>{{ realtor_email }}</div>
+</td>
+
+<td>
+    <div class="contact-name">{{ mortgage_name }}</div>
+    <div>{{ mortgage_title }}</div>
+    <div>{{ mortgage_company }}</div>
+    <div>{{ mortgage_phone }}</div>
+    <div>{{ mortgage_email }}</div>
+</td>
+
+</tr>
+</table>
+
+
+<!-- MORTGAGE SCENARIOS -->
+
+<div class="section-title">Mortgage Scenarios</div>
+
+<table class="mortgage-table">
+
+<tr>
+<th></th>
+<th class="option-header">OPTION 1</th>
+<th class="option-header">OPTION 2</th>
+<th class="option-header">OPTION 3</th>
 </tr>
 
 <tr>
-<td>Income</td>
-<td>${{ income }}</td>
+<td class="label-col">Home Price</td>
+<td>{{ option1.price }}</td>
+<td>{{ option2.price }}</td>
+<td>{{ option3.price }}</td>
 </tr>
 
 <tr>
-<td>Expenses</td>
-<td>${{ expenses }}</td>
+<td class="label-col">Down Payment %</td>
+<td>{{ option1.dp_percent }}</td>
+<td>{{ option2.dp_percent }}</td>
+<td>{{ option3.dp_percent }}</td>
 </tr>
 
 <tr>
-<td><b>Balance</b></td>
-<td><b>${{ balance }}</b></td>
+<td class="label-col">Down Payment</td>
+<td>{{ option1.dp_amount }}</td>
+<td>{{ option2.dp_amount }}</td>
+<td>{{ option3.dp_amount }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Mortgage Insurance</td>
+<td>{{ option1.insurance }}</td>
+<td>{{ option2.insurance }}</td>
+<td>{{ option3.insurance }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Mortgage Amount</td>
+<td>{{ option1.amount }}</td>
+<td>{{ option2.amount }}</td>
+<td>{{ option3.amount }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Rate</td>
+<td>{{ option1.rate }}</td>
+<td>{{ option2.rate }}</td>
+<td>{{ option3.rate }}</td>
+</tr>
+
+<tr>
+<td class="label-col">APR</td>
+<td>{{ option1.apr }}</td>
+<td>{{ option2.apr }}</td>
+<td>{{ option3.apr }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Term</td>
+<td>{{ option1.term }}</td>
+<td>{{ option2.term }}</td>
+<td>{{ option3.term }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Amortization</td>
+<td>{{ option1.amort }}</td>
+<td>{{ option2.amort }}</td>
+<td>{{ option3.amort }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Payment Frequency</td>
+<td>{{ option1.frequency }}</td>
+<td>{{ option2.frequency }}</td>
+<td>{{ option3.frequency }}</td>
+</tr>
+
+<tr>
+<td class="label-col">Payment Amount</td>
+<td><b>{{ option1.payment }}</b></td>
+<td><b>{{ option2.payment }}</b></td>
+<td><b>{{ option3.payment }}</b></td>
 </tr>
 
 </table>
+
+
+<!-- DISCLAIMER -->
+
+<div class="footer">
+The calculations and estimated results in this report provide general
+information and are not intended as financial advice. The results are used
+for illustrative purposes and are subject to change without notice.
+Actual mortgage premiums and payment amounts depend on lender approval
+and underwriting policies.
+</div>
 
 </body>
 </html>
