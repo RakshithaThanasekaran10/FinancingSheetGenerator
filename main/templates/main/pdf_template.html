@@ -1,124 +1,109 @@
+<!-- /templates/mortgage-scenarios.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="utf-8">
+<meta charset="UTF-8">
+<title>Mortgage Scenarios</title>
 
 <style>
-body {
+body{
     font-family: Arial, Helvetica, sans-serif;
-    margin: 40px;
-    color: #222;
+    margin:40px;
+    color:#222;
 }
 
-h1 {
-    font-size: 22px;
-    margin-bottom: 5px;
+.header{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:30px;
 }
 
-.subtitle {
-    font-size: 14px;
-    margin-bottom: 25px;
+.property{
+    font-size:18px;
+    font-weight:700;
 }
 
-.contact-table {
-    width: 100%;
-    margin-bottom: 30px;
+.contact{
+    font-size:13px;
+    line-height:1.5;
 }
 
-.contact-table td {
-    width: 50%;
-    vertical-align: top;
+.scenario-title{
+    font-size:22px;
+    font-weight:700;
+    margin-bottom:10px;
 }
 
-.contact-name {
-    font-weight: bold;
-    font-size: 15px;
+table{
+    width:100%;
+    border-collapse:collapse;
+    table-layout:fixed;
 }
 
-.section-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 25px 0 10px 0;
+th, td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
 }
 
-.mortgage-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
+th:first-child,
+td:first-child{
+    text-align:left;
+    font-weight:600;
+    background:#f7f7f7;
 }
 
-.mortgage-table th {
-    background: #f2f2f2;
-    border: 1px solid #ccc;
-    padding: 8px;
-    text-align: center;
+.option-header{
+    font-weight:700;
+    font-size:15px;
 }
 
-.mortgage-table td {
-    border: 1px solid #ccc;
-    padding: 8px;
+.payment{
+    font-size:18px;
+    font-weight:700;
 }
 
-.label-col {
-    font-weight: bold;
-    background: #fafafa;
-    width: 25%;
+.footer{
+    margin-top:30px;
+    font-size:11px;
+    color:#555;
+    line-height:1.4;
 }
 
-.option-header {
-    font-weight: bold;
-    text-align: center;
-}
-
-.footer {
-    margin-top: 40px;
-    font-size: 10px;
-    color: #555;
+@media print{
+    body{
+        margin:30px;
+    }
 }
 </style>
-
 </head>
 
 <body>
 
-<!-- PROPERTY HEADER -->
+<div class="header">
 
-<h1>{{ property_address }}</h1>
-<div class="subtitle">
-{{ city }}, {{ province }}, {{ postal_code }}
+<div>
+<div class="property">326 LAKESHORE ROAD</div>
+<div>Niagara-on-the-Lake, Ontario</div>
 </div>
 
+<div class="contact">
+<strong>Johnny MacDonald</strong><br>
+Salesperson<br>
+(905) 650-6633
+</div>
 
-<!-- CONTACTS -->
+<div class="contact">
+<strong>Kelly Haick</strong><br>
+Mortgage Agent Level 2<br>
+(289) 302-2211
+</div>
 
-<table class="contact-table">
-<tr>
+</div>
 
-<td>
-    <div class="contact-name">{{ realtor_name }}</div>
-    <div>{{ realtor_title }}</div>
-    <div>{{ realtor_company }}</div>
-    <div>{{ realtor_phone }}</div>
-    <div>{{ realtor_email }}</div>
-</td>
+<div class="scenario-title">Mortgage Scenarios</div>
 
-<td>
-    <div class="contact-name">{{ mortgage_name }}</div>
-    <div>{{ mortgage_title }}</div>
-    <div>{{ mortgage_company }}</div>
-    <div>{{ mortgage_phone }}</div>
-    <div>{{ mortgage_email }}</div>
-</td>
-
-</tr>
-</table>
-
-
-<!-- MORTGAGE SCENARIOS -->
-
-<div class="section-title">Mortgage Scenarios</div>
-
-<table class="mortgage-table">
+<table>
 
 <tr>
 <th></th>
@@ -128,93 +113,87 @@ h1 {
 </tr>
 
 <tr>
-<td class="label-col">Home Price</td>
-<td>{{ option1.price }}</td>
-<td>{{ option2.price }}</td>
-<td>{{ option3.price }}</td>
+<td>Home Price</td>
+<td>$1,299,900</td>
+<td>$1,299,900</td>
+<td>$1,299,900</td>
 </tr>
 
 <tr>
-<td class="label-col">Down Payment %</td>
-<td>{{ option1.dp_percent }}</td>
-<td>{{ option2.dp_percent }}</td>
-<td>{{ option3.dp_percent }}</td>
+<td>Down Payment %</td>
+<td>8.08%</td>
+<td>10.00%</td>
+<td>15.00%</td>
 </tr>
 
 <tr>
-<td class="label-col">Down Payment</td>
-<td>{{ option1.dp_amount }}</td>
-<td>{{ option2.dp_amount }}</td>
-<td>{{ option3.dp_amount }}</td>
+<td>Down Payment</td>
+<td>$104,990</td>
+<td>$129,990</td>
+<td>$194,985</td>
 </tr>
 
 <tr>
-<td class="label-col">Mortgage Insurance</td>
-<td>{{ option1.insurance }}</td>
-<td>{{ option2.insurance }}</td>
-<td>{{ option3.insurance }}</td>
+<td>Mortgage Insurance</td>
+<td>$47,796</td>
+<td>$36,267</td>
+<td>$30,938</td>
 </tr>
 
 <tr>
-<td class="label-col">Mortgage Amount</td>
-<td>{{ option1.amount }}</td>
-<td>{{ option2.amount }}</td>
-<td>{{ option3.amount }}</td>
+<td>Mortgage Amount</td>
+<td>$1,242,706</td>
+<td>$1,206,177</td>
+<td>$1,135,853</td>
 </tr>
 
 <tr>
-<td class="label-col">Rate</td>
-<td>{{ option1.rate }}</td>
-<td>{{ option2.rate }}</td>
-<td>{{ option3.rate }}</td>
+<td>Rate</td>
+<td>3.99%</td>
+<td>3.99%</td>
+<td>3.99%</td>
 </tr>
 
 <tr>
-<td class="label-col">APR</td>
-<td>{{ option1.apr }}</td>
-<td>{{ option2.apr }}</td>
-<td>{{ option3.apr }}</td>
+<td>APR</td>
+<td>3.990%</td>
+<td>3.990%</td>
+<td>3.990%</td>
 </tr>
 
 <tr>
-<td class="label-col">Term</td>
-<td>{{ option1.term }}</td>
-<td>{{ option2.term }}</td>
-<td>{{ option3.term }}</td>
+<td>Term</td>
+<td>5 Years Fixed</td>
+<td>5 Years Fixed</td>
+<td>5 Years Fixed</td>
 </tr>
 
 <tr>
-<td class="label-col">Amortization</td>
-<td>{{ option1.amort }}</td>
-<td>{{ option2.amort }}</td>
-<td>{{ option3.amort }}</td>
+<td>Amortization</td>
+<td>25 Years</td>
+<td>25 Years</td>
+<td>25 Years</td>
 </tr>
 
 <tr>
-<td class="label-col">Payment Frequency</td>
-<td>{{ option1.frequency }}</td>
-<td>{{ option2.frequency }}</td>
-<td>{{ option3.frequency }}</td>
+<td>Payment Frequency</td>
+<td>Monthly</td>
+<td>Monthly</td>
+<td>Monthly</td>
 </tr>
 
 <tr>
-<td class="label-col">Payment Amount</td>
-<td><b>{{ option1.payment }}</b></td>
-<td><b>{{ option2.payment }}</b></td>
-<td><b>{{ option3.payment }}</b></td>
+<td>Payment Amount</td>
+<td class="payment">$6,530.15</td>
+<td class="payment">$6,338.20</td>
+<td class="payment">$5,968.66</td>
 </tr>
 
 </table>
 
-
-<!-- DISCLAIMER -->
-
 <div class="footer">
-The calculations and estimated results in this report provide general
-information and are not intended as financial advice. The results are used
-for illustrative purposes and are subject to change without notice.
-Actual mortgage premiums and payment amounts depend on lender approval
-and underwriting policies.
+The calculations and estimated results in this report provide general information and are not intended as financial advice.
+Results are for illustrative purposes only and may change without notice.
 </div>
 
 </body>
