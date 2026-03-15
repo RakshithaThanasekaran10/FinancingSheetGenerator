@@ -6,16 +6,41 @@
 <title>Mortgage Scenarios</title>
 
 <style>
+
 body{
     font-family: Arial, Helvetica, sans-serif;
-    margin:40px;
+    margin:20px;
     color:#222;
 }
 
+/* Top color bar */
+.top-bar{
+    width:100%;
+    height:10px;
+    background:#0cc0df;
+    margin-bottom:15px;
+}
+
+/* Header layout */
 .header{
     display:flex;
     justify-content:space-between;
-    margin-bottom:30px;
+    align-items:flex-start;
+    margin-bottom:15px;
+}
+
+/* Property section */
+.property-section{
+    display:flex;
+    gap:15px;
+    align-items:flex-start;
+}
+
+.property-image{
+    width:120px;
+    height:90px;
+    border:1px solid #ccc;
+    background:#f2f2f2;
 }
 
 .property{
@@ -23,80 +48,114 @@ body{
     font-weight:700;
 }
 
+/* Contact sections */
 .contact{
-    font-size:13px;
-    line-height:1.5;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    line-height:1.4;
 }
 
-.scenario-title{
-    font-size:22px;
-    font-weight:700;
-    margin-bottom:10px;
+.contact img{
+    width:55px;
+    height:55px;
+    object-fit:cover;
+    border-radius:4px;
+    border:1px solid #ddd;
 }
+
+/* Title */
+.scenario-title{
+    font-size:20px;
+    font-weight:700;
+    margin:15px 0 10px 0;
+}
+
+/* Table styling */
 
 table{
     width:100%;
     border-collapse:collapse;
     table-layout:fixed;
+    font-size:13px;
 }
 
 th, td{
     border:1px solid #ddd;
-    padding:10px;
+    padding:7px;
     text-align:center;
 }
 
-th:first-child,
 td:first-child{
     text-align:left;
     font-weight:600;
-    background:#f7f7f7;
 }
 
 .option-header{
     font-weight:700;
-    font-size:15px;
 }
 
 .payment{
-    font-size:18px;
+    font-size:16px;
     font-weight:700;
 }
 
+/* Footer */
+
 .footer{
-    margin-top:30px;
-    font-size:11px;
-    color:#555;
-    line-height:1.4;
+    margin-top:15px;
+    font-size:10px;
+    color:#0cc0df;
+    line-height:1.3;
 }
 
+/* Print adjustments */
 @media print{
     body{
-        margin:30px;
+        margin:15px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
+<div class="top-bar"></div>
+
 <div class="header">
+
+<div class="property-section">
+
+<div class="property-image">
+<!-- Property image slot -->
+<img src="{{ property_image }}" style="width:100%;height:100%;object-fit:cover;">
+</div>
 
 <div>
 <div class="property">326 LAKESHORE ROAD</div>
 <div>Niagara-on-the-Lake, Ontario</div>
 </div>
 
+</div>
+
 <div class="contact">
+<img src="{{ johnny_image }}">
+<div>
 <strong>Johnny MacDonald</strong><br>
 Salesperson<br>
 (905) 650-6633
 </div>
+</div>
 
 <div class="contact">
+<img src="{{ kelly_image }}">
+<div>
 <strong>Kelly Haick</strong><br>
 Mortgage Agent Level 2<br>
 (289) 302-2211
+</div>
 </div>
 
 </div>
@@ -106,15 +165,13 @@ Mortgage Agent Level 2<br>
 <table>
 
 <tr>
-<th></th>
-<th class="option-header">CATEGORIES</th>
+<th>CATEGORIES</th>
 <th class="option-header">OPTION 1</th>
 <th class="option-header">OPTION 2</th>
 <th class="option-header">OPTION 3</th>
 </tr>
 
 <tr>
-<th></th>
 <td>Home Price</td>
 <td>$1,299,900</td>
 <td>$1,299,900</td>
@@ -122,7 +179,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Down Payment %</td>
 <td>8.08%</td>
 <td>10.00%</td>
@@ -130,7 +186,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Down Payment</td>
 <td>$104,990</td>
 <td>$129,990</td>
@@ -138,7 +193,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Mortgage Insurance</td>
 <td>$47,796</td>
 <td>$36,267</td>
@@ -146,7 +200,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Mortgage Amount</td>
 <td>$1,242,706</td>
 <td>$1,206,177</td>
@@ -154,7 +207,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Rate</td>
 <td>3.99%</td>
 <td>3.99%</td>
@@ -162,7 +214,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>APR</td>
 <td>3.990%</td>
 <td>3.990%</td>
@@ -170,7 +221,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Term</td>
 <td>5 Years Fixed</td>
 <td>5 Years Fixed</td>
@@ -178,7 +228,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Amortization</td>
 <td>25 Years</td>
 <td>25 Years</td>
@@ -186,7 +235,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Payment Frequency</td>
 <td>Monthly</td>
 <td>Monthly</td>
@@ -194,7 +242,6 @@ Mortgage Agent Level 2<br>
 </tr>
 
 <tr>
-<th></th>
 <td>Payment Amount</td>
 <td class="payment">$6,530.15</td>
 <td class="payment">$6,338.20</td>
