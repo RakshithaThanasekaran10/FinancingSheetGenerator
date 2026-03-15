@@ -4,138 +4,226 @@
 <meta charset="UTF-8">
 <title>Mortgage Scenarios</title>
 
-{% load static %}
-<link rel="stylesheet" href="../../static/pdf_design.css">
+<!-- Inline PDF-friendly CSS -->
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+    margin: 20px;
+}
 
+/* Top bar */
+.top-bar {
+    width: 100%;
+    height: 15px;
+    background: #0cc0df;
+    margin-bottom: 15px;
+}
+
+/* Property section */
+.property-section-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+.property-section-table td {
+    vertical-align: top;
+    padding: 5px;
+}
+.property-image {
+    width: 120px;
+    height: 90px;
+    border: 1px solid #ccc;
+}
+.property-image img {
+    width: 120px;
+    height: 90px;
+}
+
+/* Property info */
+.property {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Contacts */
+.contact-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.contact-table td {
+    vertical-align: top;
+    padding: 5px;
+}
+.contact-table img {
+    width: 55px;
+    height: 55px;
+    border: 1px solid #ddd;
+}
+
+/* Title */
+.scenario-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 0 10px 0;
+}
+
+/* Mortgage table */
+table.mortgage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: fixed;
+}
+table.mortgage-table th,
+table.mortgage-table td {
+    border: 1px solid #ddd;
+    padding: 7px;
+    text-align: center;
+}
+table.mortgage-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+.option-header {
+    font-weight: bold;
+}
+.payment {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Footer */
+.footer {
+    margin-top: 15px;
+    font-size: 10px;
+    color: #0cc0df;
+    line-height: 1.3;
+}
+</style>
 </head>
 
 <body>
 
-<div class="top-bar"></div>
+<!-- Top bar -->
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+    <td style="background-color: #0cc0df; height: 10px;">&nbsp;</td>
+</tr>
+</table>
 
-<div class="header">
+<!-- Property Section -->
+<table class="property-section-table">
+<tr>
+    <td class="property-image">
+        <img src="file://{{ images.one }}" width="120" height="90">
+    </td>
+    <td>
+        <div class="property">326 LAKESHORE ROAD</div>
+        <div>Niagara-on-the-Lake, Ontario</div>
+    </td>
+</tr>
+</table>
 
-<div class="property-section">
-
-<div class="property-image">
-<img src="../../static/img/1.png" alt="">
-</div>
-
-<div>
-<div class="property">326 LAKESHORE ROAD</div>
-<div>Niagara-on-the-Lake, Ontario</div>
-</div>
-
-</div>
-
-<div class="contact">
-<img src="../../static/img/1.png">
-<div>
-<strong>Johnny MacDonald</strong><br>
-Salesperson<br>
-(905) 650-6633
-</div>
-</div>
-
-<div class="contact">
-<img src="../../static/img/1.png">
-<div>
-<strong>Kelly Haick</strong><br>
-Mortgage Agent Level 2<br>
-(289) 302-2211
-</div>
-</div>
-
-</div>
+<!-- Contacts Section -->
+<table class="contact-table">
+<tr>
+    <td><img src="file://{{ images.one }}"></td>
+    <td>
+        <strong>Johnny MacDonald</strong><br>
+        Salesperson<br>
+        (905) 650-6633
+    </td>
+</tr>
+<tr>
+    <td><img src="file://{{ images.one }}" width="120" height="90"></td>
+    <td>
+        <strong>Kelly Haick</strong><br>
+        Mortgage Agent Level 2<br>
+        (289) 302-2211
+    </td>
+</tr>
+</table>
 
 <div class="scenario-title">Mortgage Scenarios</div>
 
-<table>
-
+<!-- Mortgage Table -->
+<table class="mortgage-table">
 <tr>
-<th>CATEGORIES</th>
-<th class="option-header">OPTION 1</th>
-<th class="option-header">OPTION 2</th>
-<th class="option-header">OPTION 3</th>
+    <th>CATEGORIES</th>
+    <th class="option-header">OPTION 1</th>
+    <th class="option-header">OPTION 2</th>
+    <th class="option-header">OPTION 3</th>
 </tr>
 
 <tr>
-<td>Home Price</td>
-<td>$1,299,900</td>
-<td>$1,299,900</td>
-<td>$1,299,900</td>
+    <td>Home Price</td>
+    <td>$1,299,900</td>
+    <td>$1,299,900</td>
+    <td>$1,299,900</td>
 </tr>
-
 <tr>
-<td>Down Payment %</td>
-<td>8.08%</td>
-<td>10.00%</td>
-<td>15.00%</td>
+    <td>Down Payment %</td>
+    <td>8.08%</td>
+    <td>10.00%</td>
+    <td>15.00%</td>
 </tr>
-
 <tr>
-<td>Down Payment</td>
-<td>$104,990</td>
-<td>$129,990</td>
-<td>$194,985</td>
+    <td>Down Payment</td>
+    <td>$104,990</td>
+    <td>$129,990</td>
+    <td>$194,985</td>
 </tr>
-
 <tr>
-<td>Mortgage Insurance</td>
-<td>$47,796</td>
-<td>$36,267</td>
-<td>$30,938</td>
+    <td>Mortgage Insurance</td>
+    <td>$47,796</td>
+    <td>$36,267</td>
+    <td>$30,938</td>
 </tr>
-
 <tr>
-<td>Mortgage Amount</td>
-<td>$1,242,706</td>
-<td>$1,206,177</td>
-<td>$1,135,853</td>
+    <td>Mortgage Amount</td>
+    <td>$1,242,706</td>
+    <td>$1,206,177</td>
+    <td>$1,135,853</td>
 </tr>
-
 <tr>
-<td>Rate</td>
-<td>3.99%</td>
-<td>3.99%</td>
-<td>3.99%</td>
+    <td>Rate</td>
+    <td>3.99%</td>
+    <td>3.99%</td>
+    <td>3.99%</td>
 </tr>
-
 <tr>
-<td>APR</td>
-<td>3.990%</td>
-<td>3.990%</td>
-<td>3.990%</td>
+    <td>APR</td>
+    <td>3.990%</td>
+    <td>3.990%</td>
+    <td>3.990%</td>
 </tr>
-
 <tr>
-<td>Term</td>
-<td>5 Years Fixed</td>
-<td>5 Years Fixed</td>
-<td>5 Years Fixed</td>
+    <td>Term</td>
+    <td>5 Years Fixed</td>
+    <td>5 Years Fixed</td>
+    <td>5 Years Fixed</td>
 </tr>
-
 <tr>
-<td>Amortization</td>
-<td>25 Years</td>
-<td>25 Years</td>
-<td>25 Years</td>
+    <td>Amortization</td>
+    <td>25 Years</td>
+    <td>25 Years</td>
+    <td>25 Years</td>
 </tr>
-
 <tr>
-<td>Payment Frequency</td>
-<td>Monthly</td>
-<td>Monthly</td>
-<td>Monthly</td>
+    <td>Payment Frequency</td>
+    <td>Monthly</td>
+    <td>Monthly</td>
+    <td>Monthly</td>
 </tr>
-
 <tr>
-<td>Payment Amount</td>
-<td class="payment">$6,530.15</td>
-<td class="payment">$6,338.20</td>
-<td class="payment">$5,968.66</td>
+    <td>Payment Amount</td>
+    <td class="payment">$6,530.15</td>
+    <td class="payment">$6,338.20</td>
+    <td class="payment">$5,968.66</td>
 </tr>
-
 </table>
 
 <div class="footer">
