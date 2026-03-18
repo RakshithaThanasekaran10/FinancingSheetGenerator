@@ -102,6 +102,27 @@ table.mortgage-table td:first-child {
     color: #0cc0df;
     line-height: 1.3;
 }
+
+/* QR section */
+.qr-section {
+    width: 100%;
+    margin-top: 20px;
+}
+.qr-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.qr-table td {
+    vertical-align: middle;
+}
+.qr-image img {
+    width: 80px;
+    height: 80px;
+}
+.qr-text {
+    font-size: 12px;
+    padding-left: 10px;
+}
 </style>
 </head>
 
@@ -250,11 +271,29 @@ table.mortgage-table td:first-child {
 </tr>
 </table>
 
+
 <div class="footer">
 The calculations and estimated results in this report provide general information and are not intended as financial advice. The results are used for
 illustrative purposes and are subject to change without notice. This report simply gives you a good idea of your mortgage payments, costs and potential
 savings. Actual mortgage premiums, payment information and others payable are subject to the full set of underwriting policies and standards by each
 lender.
+</div>
+
+<!-- QR Code Section -->
+<div class="qr-section">
+    <table class="qr-table">
+        <tr>
+            <!-- QR Code -->
+            <td class="qr-image" width="90">
+                <img src="{{ images.kelly }}" alt="QR Code">
+            </td>
+
+            <!-- Text -->
+            <td class="qr-text">
+                Scan this QR code to download our mobile app and explore more mortgage options anytime, anywhere.
+            </td>
+        </tr>
+    </table>
 </div>
 
 </body>
