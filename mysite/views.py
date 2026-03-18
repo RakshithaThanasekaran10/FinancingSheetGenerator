@@ -5,12 +5,24 @@ from django.template.loader import get_template
 from xhtml2pdf import pisa
 import os
 from django.conf import settings
+from django.contrib.staticfiles import finders
 
 def home(request):
     """
     Homepage view: renders the skeleton of the finance sheet generator
     """
-    return render(request, "main/home.html") 
+    return render(request, "main/home.html")
+
+def link_callback(uri, rel):
+    if uri.startswith('/static/'):
+        path = os.path.join(settings.BASE_DIR, 'main', 'static', uri.replace('/static/', ''))
+    else:
+        return uri
+
+    if not os.path.isfile(path):
+        raise Exception(f'Image not found: {path}')
+
+    return path
 
 def generate_pdf(request):
     if request.method == "POST":
@@ -25,10 +37,8 @@ def generate_pdf(request):
         # 1️⃣ Build absolute paths for CSS and images
         css_path = os.path.join(settings.BASE_DIR, 'static', 'pdf_design.css')
         images = {
-            "one": os.path.join(settings.BASE_DIR, 'main', 'static', 'img', '1.png'),
-            # "agent_johnny": os.path.join(settings.BASE_DIR, 'main', 'static', 'img', 'johnny.png'),
-            # "agent_kelly": os.path.join(settings.BASE_DIR, 'main', 'static', 'img', 'kelly.png'),
-        } # adjust filename if needed
+            "kelly": "/static/img/1.png",
+        }
 
         # 2️⃣ Prepare context
         context = {
@@ -36,7 +46,7 @@ def generate_pdf(request):
             "expenses": expenses,
             "balance": balance,
             "css_path": css_path,
-            "img_path": images,
+            "images": images,
         }
 
         # Render HTML
@@ -46,7 +56,11 @@ def generate_pdf(request):
         response = HttpResponse(content_type="application/pdf")
         response["Content-Disposition"] = "inline; filename=finance_sheet.pdf"
 
-        pisa_status = pisa.CreatePDF(html, dest=response)
+        pisa_status = pisa.CreatePDF(
+            html,
+            dest=response,
+            link_callback=link_callback  # ✅ THIS FIXES IMAGES
+        )
 
         if pisa_status.err:
             return HttpResponse("Error generating PDF")
