@@ -7,7 +7,7 @@ SECRET_KEY = "django-insecure-replace-this-with-your-secret-key"
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['financingsheetgenerator-zx4g.onrender.com', 'localhost', '127.0.0.1']
 
 # Installed apps
 INSTALLED_APPS = [
