@@ -6,40 +6,8 @@
 <div class="card p-3 shadow-sm">
     <h5 class="mb-3">Input Options</h5>
 
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-
-        <div class="mb-3">
-            <label class="form-label">Monthly Income</label>
-            <input type="number"
-                   step="0.01"
-                   name="income"
-                   id="income"
-                   class="form-control"
-                   placeholder="Enter income"
-                   required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Monthly Expenses</label>
-            <input type="number"
-                   step="0.01"
-                   name="expenses"
-                   id="expenses"
-                   class="form-control"
-                   placeholder="Enter expenses"
-                   required>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">Mortgage Rate (%)</label>
-            <input type="number"
-                   step="0.01"
-                   name="rate"
-                   class="form-control"
-                   placeholder="Enter mortgage rate"
-                   required>
-        </div>
 
         <div class="mb-3">
             <label class="form-label">MLS Number</label>
@@ -50,14 +18,41 @@
                    required>
         </div>
 
+        <div class="mb-3">
+            <label class="form-label">Property Address</label>
+            <input type="text"
+                   name="address"
+                   class="form-control"
+                   placeholder="Enter property address"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mortgage Rate (%)</label>
+            <input type="number"
+                   step="0.01"
+                   name="rate"
+                   id="rate"
+                   class="form-control"
+                   placeholder="Enter mortgage rate"
+                   required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Property Picture</label>
+            <input type="file"
+                   name="property_pic"
+                   id="property-pic"
+                   class="form-control"
+                   accept="image/*">
+        </div>
+
         <button type="submit" class="btn btn-primary w-100">
             Generate Financing Sheet PDF
         </button>
     </form>
 </div>
 {% endblock %}
-
-
 
 {% block content %}
 <div class="card p-4 shadow-sm">
@@ -66,25 +61,27 @@
     <table class="table">
         <thead>
             <tr>
-                <th>Category</th>
-                <th>Amount</th>
+                <th>Field</th>
+                <th>Preview</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>Income</td>
-                <td>$<span id="preview-income">0.00</span></td>
+                <td>MLS Number</td>
+                <td><span id="preview-mls"></span></td>
             </tr>
             <tr>
-                <td>Expenses</td>
-                <td>$<span id="preview-expenses">0.00</span></td>
+                <td>Address</td>
+                <td><span id="preview-address"></span></td>
             </tr>
             <tr>
-                <td><strong>Balance</strong></td>
+                <td>Mortgage Rate (%)</td>
+                <td><span id="preview-rate">0.00</span></td>
+            </tr>
+            <tr>
+                <td>Property Picture</td>
                 <td>
-                    <strong>
-                        $<span id="preview-balance">0.00</span>
-                    </strong>
+                    <img id="preview-pic" src="#" alt="Property Preview" style="max-width: 200px; display: none;">
                 </td>
             </tr>
         </tbody>
@@ -92,31 +89,36 @@
 </div>
 
 <script>
-    const incomeInput = document.getElementById("income");
-    const expensesInput = document.getElementById("expenses");
+    const mlsInput = document.querySelector("input[name='mls']");
+    const addressInput = document.querySelector("input[name='address']");
+    const rateInput = document.getElementById("rate");
+    const picInput = document.getElementById("property-pic");
 
-    const previewIncome = document.getElementById("preview-income");
-    const previewExpenses = document.getElementById("preview-expenses");
-    const previewBalance = document.getElementById("preview-balance");
+    const previewMLS = document.getElementById("preview-mls");
+    const previewAddress = document.getElementById("preview-address");
+    const previewRate = document.getElementById("preview-rate");
+    const previewPic = document.getElementById("preview-pic");
 
     function updatePreview() {
-        const income = parseFloat(incomeInput.value) || 0;
-        const expenses = parseFloat(expensesInput.value) || 0;
-        const balance = income - expenses;
+        previewMLS.textContent = mlsInput.value;
+        previewAddress.textContent = addressInput.value;
 
-        previewIncome.textContent = income.toFixed(2);
-        previewExpenses.textContent = expenses.toFixed(2);
-        previewBalance.textContent = balance.toFixed(2);
+        const rate = parseFloat(rateInput.value) || 0;
+        previewRate.textContent = rate.toFixed(2);
 
-        if (balance >= 0) {
-            previewBalance.style.color = "green";
-        } else {
-            previewBalance.style.color = "red";
+        if (picInput.files && picInput.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewPic.src = e.target.result;
+                previewPic.style.display = 'block';
+            }
+            reader.readAsDataURL(picInput.files[0]);
         }
     }
 
-    incomeInput.addEventListener("input", updatePreview);
-    expensesInput.addEventListener("input", updatePreview);
+    mlsInput.addEventListener("input", updatePreview);
+    addressInput.addEventListener("input", updatePreview);
+    rateInput.addEventListener("input", updatePreview);
+    picInput.addEventListener("change", updatePreview);
 </script>
-
 {% endblock %}
