@@ -38,7 +38,7 @@ def generate_pdf(request):
         css_path = os.path.join(settings.BASE_DIR, 'static', 'pdf_design.css')
         images = {
             "kelly": "/static/img/1.png",
-            #"qr code": "/static/img/1.png",
+            "qrcode": "/static/img/qr_code.png",
         }
 
         # 2️⃣ Prepare context
