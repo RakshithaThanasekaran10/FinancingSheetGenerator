@@ -1,55 +1,327 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<style>
+<meta charset="UTF-8">
+<title>Mortgage Scenarios</title>
 
+<!-- Inline PDF-friendly CSS -->
+<style>
 body {
-    font-family: Arial;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+    margin: 20px;
 }
 
-table {
+/* Top bar */
+.top-bar {
+    width: 100%;
+    height: 15px;
+    background: #0cc0df;
+    margin-bottom: 15px;
+}
+
+/* Property section */
+.property-section-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+.property-section-table td {
+    vertical-align: top;
+    padding: 5px;
+}
+.property-image {
+    width: 120px;
+    height: 90px;
+    border: 1px solid #ccc;
+}
+.property-image img {
+    width: 120px;
+    height: 90px;
+}
+
+/* Property info */
+.property {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Contacts */
+.contact-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.contact-table td {
+    vertical-align: top;
+    padding: 5px;
+}
+.contact-table img {
+    width: 55px;
+    height: 55px;
+    border: 1px solid #ddd;
+}
+
+/* Title */
+.scenario-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 0 10px 0;
+}
+
+/* Mortgage table */
+table.mortgage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: fixed;
+}
+table.mortgage-table th,
+table.mortgage-table td {
+    border: 1px solid #ddd;
+    padding: 7px;
+    text-align: center;
+}
+table.mortgage-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+.option-header {
+    font-weight: bold;
+}
+.payment {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Header */
+.header {
+    margin-top: 5px;
+    font-size: 15px;
+    color: #0cc0df;
+    line-height: 1;
+    font-weight: bold;
+}
+
+/* Footer */
+.footer {
+    margin-top: 5px;
+    font-size: 10px;
+    color: #696969;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* QR section */
+.qr-section {
+    width: 100%;
+    margin-top: 20px;
+}
+.qr-table {
     width: 100%;
     border-collapse: collapse;
 }
-
-th, td {
-    border: 1px solid black;
-    padding: 8px;
+.qr-table td {
+    vertical-align: middle;
 }
-
-th {
-    background-color: #dddddd;
+.qr-image img {
+    width: 80px;
+    height: 80px;
 }
-
+.qr-text {
+    font-size: 12px;
+    /*padding-left: 5px;*/
+    font-weight: bold;
+}
 </style>
 </head>
 
 <body>
 
-<h2>Finance Sheet</h2>
+<!-- Date -->
+<div class="header">3/18/2026</div>
 
-<table>
+<!-- Top bar -->
+<table width="100%" cellspacing="0" cellpadding="0">
 <tr>
-<th>Category</th>
-<th>Amount</th>
+    <td style="background-color: #0cc0df; height: 10px;">&nbsp;</td>
 </tr>
-
-<tr>
-<td>Income</td>
-<td>${{ income }}</td>
-</tr>
-
-<tr>
-<td>Expenses</td>
-<td>${{ expenses }}</td>
-</tr>
-
-<tr>
-<td><b>Balance</b></td>
-<td><b>${{ balance }}</b></td>
-</tr>
-
 </table>
+
+<!-- Contacts + property -->
+<table width="100%" style="margin-bottom: 15px;" cellspacing="0" cellpadding="0">
+<tr>
+
+    <!-- LEFT: Property -->
+    <td width="50%" style="vertical-align: top;">
+
+        <table>
+        <tr>
+            <td width="130" style="vertical-align: top;">
+                <img src="{{ images.kelly }}" width="120" height="120">
+            </td>
+            <td style="vertical-align: top;">
+                <div style="font-size:18px; font-weight:bold;">
+                    326 LAKESHORE ROAD
+                </div>
+                <div>Niagara-on-the-Lake, Ontario</div>
+            </td>
+        </tr>
+        </table>
+
+    </td>
+
+    <!-- RIGHT: Contacts -->
+    <td width="50%" style="vertical-align: top;">
+
+        <table width="100%">
+
+        <tr>
+            <td width="60" style="vertical-align: top;">
+                <img src="{{ images.kelly }}" width="55" height="55">
+            </td>
+            <td style="vertical-align: top;">
+                <strong>Johnny MacDonald</strong><br>
+                Salesperson<br>
+                (905) 650-6633
+            </td>
+        </tr>
+
+        <tr>
+            <td width="60" style="vertical-align: top;">
+                <img src="{{ images.kelly }}" width="55" height="55">
+            </td>
+            <td style="vertical-align: top;">
+                <strong>Kelly Haick</strong><br>
+                Mortgage Agent Level 2<br>
+                (289) 302-2211
+            </td>
+        </tr>
+
+        </table>
+
+    </td>
+
+</tr>
+</table>
+
+<div class="scenario-title">Mortgage Scenarios</div>
+
+<!-- Mortgage Table -->
+<table class="mortgage-table">
+<tr>
+    <th>CATEGORIES</th>
+    <th class="option-header">OPTION 1</th>
+    <th class="option-header">OPTION 2</th>
+    <th class="option-header">OPTION 3</th>
+</tr>
+
+<tr>
+    <td>Home Price</td>
+    <td>$1,299,900</td>
+    <td>$1,299,900</td>
+    <td>$1,299,900</td>
+</tr>
+<tr>
+    <td>Down Payment %</td>
+    <td>8.08%</td>
+    <td>10.00%</td>
+    <td>15.00%</td>
+</tr>
+<tr>
+    <td>Down Payment</td>
+    <td>$104,990</td>
+    <td>$129,990</td>
+    <td>$194,985</td>
+</tr>
+<tr>
+    <td>Mortgage Insurance</td>
+    <td>$47,796</td>
+    <td>$36,267</td>
+    <td>$30,938</td>
+</tr>
+<tr>
+    <td>Mortgage Amount</td>
+    <td>$1,242,706</td>
+    <td>$1,206,177</td>
+    <td>$1,135,853</td>
+</tr>
+<tr>
+    <td>Rate</td>
+    <td>3.99%</td>
+    <td>3.99%</td>
+    <td>3.99%</td>
+</tr>
+<tr>
+    <td>APR</td>
+    <td>3.990%</td>
+    <td>3.990%</td>
+    <td>3.990%</td>
+</tr>
+<tr>
+    <td>Term</td>
+    <td>5 Years Fixed</td>
+    <td>5 Years Fixed</td>
+    <td>5 Years Fixed</td>
+</tr>
+<tr>
+    <td>Amortization</td>
+    <td>25 Years</td>
+    <td>25 Years</td>
+    <td>25 Years</td>
+</tr>
+<tr>
+    <td>Payment Frequency</td>
+    <td>Monthly</td>
+    <td>Monthly</td>
+    <td>Monthly</td>
+</tr>
+<tr>
+    <td>Payment Amount</td>
+    <td class="payment">$6,530.15</td>
+    <td class="payment">$6,338.20</td>
+    <td class="payment">$5,968.66</td>
+</tr>
+</table>
+
+
+<div class="footer">
+The calculations and estimated results in this report provide general information and are not intended as financial advice. The results are used for
+illustrative purposes and are subject to change without notice. This report simply gives you a good idea of your mortgage payments, costs and potential
+savings. Actual mortgage premiums, payment information and others payable are subject to the full set of underwriting policies and standards by each
+lender.
+</div>
+
+<!-- QR Code Section -->
+<div class="qr-section">
+    <table class="qr-table">
+        <tr>
+            <!-- QR Code -->
+            <td class="qr-image" width="90">
+                <img src="{{ images.qrcode }}" alt="QR Code">
+            </td>
+
+            <!-- Text -->
+            <td class="qr-text">
+                Download Canadian Mortgage App
+            </td>
+            
+            <!-- BRX Logo -->
+            <td class="qr-image" width="100%" style="text-align: right;">
+                <img src="{{ images.brx }}" alt="BRX Logo">
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Bottom bar
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+    <td style="background-color: #0cc0df; height: 10px;">&nbsp;</td>
+</tr>
+</table>
+-->
 
 </body>
 </html>
