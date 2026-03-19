@@ -39,6 +39,8 @@ def generate_pdf(request):
         images = {
             "kelly": "/static/img/1.png",
             "qrcode": "/static/img/qr_code.png",
+            "brx": "/static/img/Copy of BRX Logo_ON_Black Transparent.png",
+            "HaickLogo": "/static/img/Copy of recent logo.png",
         }
 
         # 2️⃣ Prepare context

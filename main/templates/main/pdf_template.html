@@ -96,11 +96,11 @@ table.mortgage-table td:first-child {
 }
 
 /* Header */
-header {
-    margin-top: 15px;
+.header {
+    margin-top: 5px;
     font-size: 15px;
     color: #0cc0df;
-    line-height: 1.3;
+    line-height: 1;
     font-weight: bold;
 }
 
@@ -140,7 +140,7 @@ header {
 <body>
 
 <!-- Date -->
-<table class="header">3/18/2026</table>
+<div class="header">3/18/2026</div>
 
 <!-- Top bar -->
 <table width="100%" cellspacing="0" cellpadding="0">
@@ -305,6 +305,11 @@ lender.
             <!-- Text -->
             <td class="qr-text">
                 Download Canadian Mortgage App
+            </td>
+            
+            <!-- BRX Logo -->
+            <td class="qr-image" width="200" style="text-align: right;">
+                <img src="{{ images.brx }}" alt="BRX Logo">
             </td>
         </tr>
     </table>
