@@ -62,10 +62,6 @@
                 <td><span id="preview-mls"></span></td>
             </tr>
             <tr>
-                <td>Address</td>
-                <td><span id="preview-address"></span></td>
-            </tr>
-            <tr>
                 <td>Mortgage Rate (%)</td>
                 <td><span id="preview-rate">0.00</span></td>
             </tr>
@@ -81,18 +77,15 @@
 
 <script>
     const mlsInput = document.querySelector("input[name='mls']");
-    const addressInput = document.querySelector("input[name='address']");
     const rateInput = document.getElementById("rate");
     const picInput = document.getElementById("property-pic");
 
     const previewMLS = document.getElementById("preview-mls");
-    const previewAddress = document.getElementById("preview-address");
     const previewRate = document.getElementById("preview-rate");
     const previewPic = document.getElementById("preview-pic");
 
     function updatePreview() {
         previewMLS.textContent = mlsInput.value;
-        previewAddress.textContent = addressInput.value;
 
         const rate = parseFloat(rateInput.value) || 0;
         previewRate.textContent = rate.toFixed(2);
@@ -104,11 +97,12 @@
                 previewPic.style.display = 'block';
             }
             reader.readAsDataURL(picInput.files[0]);
+        } else {
+            previewPic.style.display = 'none';
         }
     }
 
     mlsInput.addEventListener("input", updatePreview);
-    addressInput.addEventListener("input", updatePreview);
     rateInput.addEventListener("input", updatePreview);
     picInput.addEventListener("change", updatePreview);
 </script>
