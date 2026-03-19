@@ -6,6 +6,7 @@ from xhtml2pdf import pisa
 import os
 from django.conf import settings
 from django.contrib.staticfiles import finders
+from datetime import date
 
 def home(request):
     """
@@ -50,6 +51,7 @@ def generate_pdf(request):
             "balance": balance,
             "css_path": css_path,
             "images": images,
+            "current_date": date.today(),
         }
 
         # Render HTML
