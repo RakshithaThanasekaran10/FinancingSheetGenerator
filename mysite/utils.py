@@ -72,17 +72,21 @@ def calculate_mortgage_summary(list_price, down_payment_percentage, rate, est_pr
     }
 
 
+
 # Given values -- these would be imported from API
 
+"""
 down_payment_percentage = 20.0      # input as percentage, e.g., 20 for 20%
 list_price = 400000
 est_property_fees = 426
 est_condo_fees = 0
 est_heat_cost = 100
 rate = 0.0459     # annual interest rate, converted to monthly in the pmt function
+"""
 
 ## Testing
 ### CODE BELOW ALL GENERATED WITH AI
+
 def print_comparison_table(list_price, dp_percentages, rate, prop_fees, condo_fees, heat_cost, insurance_type):
     # Header logic
     headers = [f"{dp}%" for dp in dp_percentages]
