@@ -35,7 +35,7 @@ def generate_pdf(request):
         # Load template
         template = get_template("main/pdf_template.html")
 
-        # 1️⃣ Build absolute paths for CSS and images
+        # Build absolute paths for CSS and images
         css_path = os.path.join(settings.BASE_DIR, 'static', 'pdf_design.css')
         images = {
             "kelly": "/static/img/1.png",
@@ -44,7 +44,7 @@ def generate_pdf(request):
             "HaickLogo": "/static/img/Copy of recent logo.png",
         }
 
-        # 2️⃣ Prepare context
+        # Prepare context
         context = {
             "income": income,
             "expenses": expenses,
@@ -57,14 +57,14 @@ def generate_pdf(request):
         # Render HTML
         html = template.render(context)
 
-        # 3️⃣ Generate PDF
+        # Generate PDF
         response = HttpResponse(content_type="application/pdf")
         response["Content-Disposition"] = "inline; filename=finance_sheet.pdf"
 
         pisa_status = pisa.CreatePDF(
             html,
             dest=response,
-            link_callback=link_callback  # ✅ THIS FIXES IMAGES
+            link_callback=link_callback  # THIS FIXES IMAGES
         )
 
         if pisa_status.err:
