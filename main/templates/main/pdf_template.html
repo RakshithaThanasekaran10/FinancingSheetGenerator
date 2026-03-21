@@ -139,8 +139,19 @@ table.mortgage-table td:first-child {
 
 <body>
 
-<!-- Date -->
-<div class="header">{{ current_date }}</div>
+<table width="100%" style="margin-bottom: 5px;" cellspacing="0" cellpadding="0">
+<tr>
+    <!-- LEFT: Date -->
+    <td class="header" style="text-align: left;">
+        {{ current_date }}
+    </td>
+
+    <!-- RIGHT: ID -->
+    <td class="header" style="text-align: right;">
+        MLS Number: {{ report_id }}
+    </td>
+</tr>
+</table>
 
 <!-- Top bar -->
 <table width="100%" cellspacing="0" cellpadding="0">
@@ -304,7 +315,7 @@ lender.
 
             <!-- Text -->
             <td class="qr-text">
-                Download Canadian Mortgage App
+                Download the Canadian Mortgage App!
             </td>
             
             <!-- BRX Logo -->
