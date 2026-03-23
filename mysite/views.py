@@ -74,6 +74,7 @@ def generate_pdf(request):
             "qrcode": "/static/img/qr_code.png",
             "brx": "/static/img/Copy of BRX Logo_ON_Black Transparent.png",
             "HaickLogo": "/static/img/Copy of recent logo.png",
+            "defaultAgent": "/static/img/default.png",
         }
 
         context = {
