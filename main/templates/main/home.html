@@ -20,6 +20,24 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Insurance Type</label>
+            <div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="insurance_type" id="insured" value="0" checked>
+                    <label class="form-check-label" for="insured">Insured</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="insurance_type" id="insurable" value="1">
+                    <label class="form-check-label" for="insurable">Insurable</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="insurance_type" id="uninsured" value="2">
+                    <label class="form-check-label" for="uninsured">Uninsured</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Property Picture</label>
             <input type="file" name="property_pic" id="property-pic" class="form-control" accept="image/*">
         </div>

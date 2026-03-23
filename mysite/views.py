@@ -30,6 +30,7 @@ def generate_pdf(request):
 
         mls_id = request.POST.get("mls", "")
         rate = float(request.POST.get("rate", 0))
+        insurance_type = int(request.POST.get("insurance_type", 0))
         property_pic = request.FILES.get("property_pic")
 
         # try to inline upload pic for pdf if possible; will fallback to static if not.
@@ -44,7 +45,7 @@ def generate_pdf(request):
             except Exception:
                 uploaded_pic_data = None
 
-        # computation example: convert rate to monthly rate as a derived value
+        # computation: convert rate to monthly rate as a derived value
         monthly_rate = rate / 100 / 12
 
         template = get_template("main/pdf_template.html")
@@ -61,6 +62,7 @@ def generate_pdf(request):
             "mls_id": mls_id,
             "rate": rate,
             "monthly_rate": monthly_rate,
+            "insurance_type": insurance_type,
             "uploaded_pic_data": uploaded_pic_data,
             "css_path": css_path,
             "images": images,
