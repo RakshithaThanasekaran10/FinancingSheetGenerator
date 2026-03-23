@@ -6,41 +6,43 @@
 <div class="card p-3 shadow-sm">
     <h5 class="mb-3">Input Options</h5>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" action="{% url 'generate_pdf' %}" enctype="multipart/form-data" target="_blank">
         {% csrf_token %}
 
         <div class="mb-3">
             <label class="form-label">MLS Number</label>
-            <input type="text"
-                   name="mls"
-                   class="form-control"
-                   placeholder="Enter MLS number"
-                   required>
+            <input type="text" name="mls" class="form-control" placeholder="Enter MLS number" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Mortgage Rate (%)</label>
-            <input type="number"
-                   step="0.01"
-                   name="rate"
-                   id="rate"
-                   class="form-control"
-                   placeholder="Enter mortgage rate"
-                   required>
+            <input type="number" step="0.01" name="rate" id="rate" class="form-control" placeholder="Enter mortgage rate" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Insurance Type</label>
+            <div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="insurance_type" id="insured" value="0" checked>
+                    <label class="form-check-label" for="insured">Insured</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="insurance_type" id="insurable" value="1">
+                    <label class="form-check-label" for="insurable">Insurable</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="insurance_type" id="uninsured" value="2">
+                    <label class="form-check-label" for="uninsured">Uninsured</label>
+                </div>
+            </div>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Property Picture</label>
-            <input type="file"
-                   name="property_pic"
-                   id="property-pic"
-                   class="form-control"
-                   accept="image/*">
+            <input type="file" name="property_pic" id="property-pic" class="form-control" accept="image/*">
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">
-            Generate Financing Sheet PDF
-        </button>
+        <button type="submit" class="btn btn-primary w-100">Generate Financing Sheet PDF</button>
     </form>
 </div>
 {% endblock %}
@@ -106,4 +108,4 @@
     rateInput.addEventListener("input", updatePreview);
     picInput.addEventListener("change", updatePreview);
 </script>
-{% endblock %}
+{% endblock %} 

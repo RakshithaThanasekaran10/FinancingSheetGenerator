@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mortgage Scenarios</title>
+
+<!-- Inline PDF-friendly CSS -->
+<style>
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #222;
+    margin: 20px;
+}
+
+/* Top bar */
+.top-bar {
+    width: 100%;
+    height: 15px;
+    background: #0cc0df;
+    margin-bottom: 15px;
+}
+
+/* Property section */
+.property-section-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 15px;
+}
+.property-section-table td {
+    vertical-align: top;
+    padding: 5px;
+}
+.property-image {
+    width: 120px;
+    height: 90px;
+    border: 1px solid #ccc;
+}
+.property-image img {
+    width: 120px;
+    height: 90px;
+}
+
+/* Property info */
+.property {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Contacts */
+.contact-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+.contact-table td {
+    vertical-align: top;
+    padding: 5px;
+}
+.contact-table img {
+    width: 55px;
+    height: 55px;
+    border: 1px solid #ddd;
+}
+
+/* Title */
+.scenario-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 15px 0 10px 0;
+}
+
+/* Mortgage table */
+table.mortgage-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    table-layout: fixed;
+}
+table.mortgage-table th,
+table.mortgage-table td {
+    border: 1px solid #ddd;
+    padding: 7px;
+    text-align: center;
+}
+table.mortgage-table td:first-child {
+    text-align: left;
+    font-weight: 600;
+}
+.option-header {
+    font-weight: bold;
+}
+.payment {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Header */
+.header {
+    margin-top: 5px;
+    font-size: 15px;
+    color: #0cc0df;
+    line-height: 1;
+    font-weight: bold;
+}
+
+/* Footer */
+.footer {
+    margin-top: 5px;
+    font-size: 10px;
+    color: #696969;
+    line-height: 1.3;
+    text-align: center;
+}
+
+/* QR section */
+.qr-section {
+    width: 100%;
+    margin-top: 20px;
+}
+.qr-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.qr-table td {
+    vertical-align: middle;
+}
+.qr-image img {
+    width: 80px;
+    height: 80px;
+}
+.qr-text {
+    font-size: 12px;
+    /*padding-left: 5px;*/
+    font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<table width="100%" style="margin-bottom: 5px;" cellspacing="0" cellpadding="0">
+<tr>
+    <!-- LEFT: Date -->
+    <td class="header" style="text-align: left;">
+        {{ current_date }}
+    </td>
+
+    <!-- RIGHT: MLS number -->
+    <td class="header" style="text-align: right;">
+        MLS Number: {{ mls_id }}
+    </td>
+</tr>
+</table>
+
+<!-- Top bar -->
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+    <td style="background-color: #0cc0df; height: 10px;">&nbsp;</td>
+</tr>
+</table>
+
+<!-- Contacts + property -->
+<table width="100%" style="margin-bottom: 15px;" cellspacing="0" cellpadding="0">
+<tr>
+
+    <!-- LEFT: Property -->
+    <td width="50%" style="vertical-align: top;">
+
+        <table>
+        <tr>
+            <td width="130" style="vertical-align: top;">
+                <img src="{{ images.kelly }}" width="120" height="120">
+            </td>
+            <td style="vertical-align: top;">
+                <div style="font-size:18px; font-weight:bold;">
+                    326 LAKESHORE ROAD
+                </div>
+                <div>Niagara-on-the-Lake, Ontario</div>
+            </td>
+        </tr>
+        </table>
+
+    </td>
+
+    <!-- RIGHT: Contacts -->
+    <td width="50%" style="vertical-align: top;">
+
+        <table width="100%">
+
+        <tr>
+            <td width="60" style="vertical-align: top;">
+                <img src="{{ images.defaultAgent }}" width="55" height="55">
+            </td>
+            <td style="vertical-align: top;">
+                <strong>Johnny MacDonald</strong><br>
+                Salesperson<br>
+                (905) 650-6633
+            </td>
+        </tr>
+
+        <tr>
+            <td width="60" style="vertical-align: top;">
+                <img src="{{ images.kelly }}" width="55" height="55">
+            </td>
+            <td style="vertical-align: top;">
+                <strong>Kelly Haick</strong><br>
+                Mortgage Agent Level 2<br>
+                (289) 302-2211
+            </td>
+        </tr>
+
+        </table>
+
+    </td>
+
+</tr>
+</table>
+
+<div class="scenario-title">Mortgage Scenarios</div>
+
+<!-- Mortgage Table -->
+<table class="mortgage-table">
+<tr>
+    <th>CATEGORIES</th>
+    {% for dp in dp_scenarios %}
+        <th class="option-header">OPTION {{ forloop.counter }}</th>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Type</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>{%if insurance_type == 0%}Insured {%elif insurance_type == 1%}Insurable {%elif insurance_type == 2%}Uninsured {%endif%}</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Home Price</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.list_price|floatformat:0 }}</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Down Payment %</td>
+    {% for dp in dp_scenarios %}
+        <td>{{ dp|floatformat:2 }}%</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Down Payment</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.down_payment|floatformat:0 }}</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Mortgage Insurance</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.mortgage_insurance_fee|floatformat:0 }}</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Mortgage Amount</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.total_mortgage_insurance|floatformat:0 }}</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Rate</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>{{ rate|floatformat:2 }}%</td>
+    {% endfor %}
+</tr>
+
+<tr>
+    <td>Term</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>5 Years Fixed</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Amortization</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>{% if insurance_type == 2 %}30{% else %}25{% endif %} Years</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Payment Frequency</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>Monthly</td>
+    {% endfor %}
+</tr>
+<tr>
+    <td>Payment Amount</td>
+    {% for scenario in mortgage_scenarios %}
+        <td class="payment">${{ scenario.monthly_mortgage|floatformat:2 }}</td>
+    {% endfor %}
+</tr>
+</table>
+
+
+<div class="footer">
+The calculations and estimated results in this report provide general information and are not intended as financial advice. The results are used for
+illustrative purposes and are subject to change without notice. This report simply gives you a good idea of your mortgage payments, costs and potential
+savings. Actual mortgage premiums, payment information and others payable are subject to the full set of underwriting policies and standards by each
+lender.
+</div>
+
+<!-- QR Code Section -->
+<div class="qr-section">
+    <table class="qr-table">
+        <tr>
+            <!-- QR Code -->
+            <td class="qr-image" width="90" style="text-align: left;">
+                <img src="{{ images.qrcode }}" alt="QR Code">
+            </td>
+
+            <!-- Text -->
+            <td class="qr-text">
+                Download the Canadian Mortgage App!
+            </td>
+            
+            <!-- BRX Logo -->
+            <td class="qr-image" width="100" style="text-align: right;">
+                <img src="{{ images.brx }}" alt="BRX Logo">
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Bottom bar
+<table width="100%" cellspacing="0" cellpadding="0">
+<tr>
+    <td style="background-color: #0cc0df; height: 10px;">&nbsp;</td>
+</tr>
+</table>
+-->
+
+</body>
+</html>

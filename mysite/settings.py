@@ -62,6 +62,7 @@ DATABASES = {
 
 # Static files
 STATIC_URL = 'static/'
+# STATICFILES_DIRS = [BASE_DIR / "static"]  # Removed - static files are in app directories
 
 # Default primary key
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField' 
