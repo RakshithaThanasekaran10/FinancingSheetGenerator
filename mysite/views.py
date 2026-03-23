@@ -28,15 +28,28 @@ def link_callback(uri, rel):
 def generate_pdf(request):
     if request.method == "POST":
 
-        income = float(request.POST.get("income", 0))
-        expenses = float(request.POST.get("expenses", 0))
-        balance = income - expenses
+        mls_id = request.POST.get("mls", "")
+        rate = float(request.POST.get("rate", 0))
+        property_pic = request.FILES.get("property_pic")
 
-        # Load template
+        # try to inline upload pic for pdf if possible; will fallback to static if not.
+        uploaded_pic_data = None
+        if property_pic:
+            try:
+                import base64
+                uploaded_pic_data = "data:%s;base64,%s" % (
+                    property_pic.content_type,
+                    base64.b64encode(property_pic.read()).decode('utf-8')
+                )
+            except Exception:
+                uploaded_pic_data = None
+
+        # computation example: convert rate to monthly rate as a derived value
+        monthly_rate = rate / 100 / 12
+
         template = get_template("main/pdf_template.html")
 
-        # Build absolute paths for CSS and images
-        css_path = os.path.join(settings.BASE_DIR, 'static', 'pdf_design.css')
+        css_path = os.path.join(settings.BASE_DIR, 'main', 'static', 'pdf_design.css')
         images = {
             "kelly": "/static/img/1.png",
             "qrcode": "/static/img/qr_code.png",
@@ -44,30 +57,30 @@ def generate_pdf(request):
             "HaickLogo": "/static/img/Copy of recent logo.png",
         }
 
-        # Prepare context
         context = {
-            "income": income,
-            "expenses": expenses,
-            "balance": balance,
+            "mls_id": mls_id,
+            "rate": rate,
+            "monthly_rate": monthly_rate,
+            "uploaded_pic_data": uploaded_pic_data,
             "css_path": css_path,
             "images": images,
             "current_date": date.today(),
         }
 
-        # Render HTML
         html = template.render(context)
 
-        # Generate PDF
         response = HttpResponse(content_type="application/pdf")
         response["Content-Disposition"] = "inline; filename=finance_sheet.pdf"
 
         pisa_status = pisa.CreatePDF(
             html,
             dest=response,
-            link_callback=link_callback  # THIS FIXES IMAGES
+            link_callback=link_callback
         )
 
         if pisa_status.err:
             return HttpResponse("Error generating PDF")
 
         return response
+
+    return HttpResponse("Invalid request", status=400)
