@@ -135,8 +135,8 @@ def generate_pdf(request):
         print("Listing found:", listing)
         print("Agent found:", agent)
 
-        # TODO: These will come from API integration
-        list_price = 400000  # Placeholder
+        # Get values from API listing
+        list_price = listing.get("property_price_unformatted", 400000)
         est_property_fees = 426  # Placeholder
         est_condo_fees = 0  # Placeholder
         est_heat_cost = 100  # Placeholder

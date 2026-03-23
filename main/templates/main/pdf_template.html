@@ -236,7 +236,7 @@ table.mortgage-table td:first-child {
 <tr>
     <td>Home Price</td>
     {% for scenario in mortgage_scenarios %}
-        <td>${{ scenario.list_price|floatformat:0 }}</td>
+        <td>${{ list_price|floatformat:0 }}</td>
     {% endfor %}
 </tr>
 <tr>

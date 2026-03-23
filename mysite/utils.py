@@ -79,6 +79,7 @@ def calculate_mortgage_summary(list_price, down_payment_percentage, rate, est_pr
     annual_gross_income_required = round((rounded_total_monthly_payment * 12) / 0.32)
 
     return {
+        "list_price": list_price,
         "down_payment": down_payment,
         "mortgage_amount": mortgage_amount,
         "mortgage_insurance_fee": mortgage_insurance_fee,
