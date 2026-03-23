@@ -227,7 +227,12 @@ table.mortgage-table td:first-child {
         <th class="option-header">OPTION {{ forloop.counter }}</th>
     {% endfor %}
 </tr>
-
+<tr>
+    <td>Type</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>{%if insurance_type == 0%}Insured {%elif insurance_type == 1%}Insurable {%elif insurance_type == 2%}Uninsured {%endif%}</td>
+    {% endfor %}
+</tr>
 <tr>
     <td>Home Price</td>
     {% for scenario in mortgage_scenarios %}
