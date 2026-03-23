@@ -13,6 +13,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 import io
+from .test_api import get_agents, get_listings, get_listing_agent
 
 def home(request):
     """
@@ -87,12 +88,52 @@ def link_callback(uri, rel):
     return path
 
 def generate_pdf(request):
+    print("---- GENERATE PDF CALLED ----")
     if request.method == "POST":
 
-        mls_id = request.POST.get("mls", "")
+        user_mls = request.POST.get("mls", "").strip()
         rate = float(request.POST.get("rate", 0)) / 100  # Convert percentage to decimal
         insurance_type = int(request.POST.get("insurance_type", 0))
         property_pic = request.FILES.get("property_pic")
+
+        #connect api with agent information, MLS number, and property address
+        agents = get_agents()
+        listings = get_listings()
+        listing_agents = get_listing_agent()
+
+        #takes MLS number
+
+        #test
+        print("User entered MLS:", user_mls)
+        print("Available MLS in API:", [str(l.get("mls_number")) for l in listings])
+
+        #grab listing number
+        listing = next(
+            (l for l in listings if str(l.get("mls_number")).strip() == user_mls),
+            None
+        )
+        if not listing:
+            return HttpResponse("Listing not found")
+
+        # find matching agent
+        agent_id = None
+        for la in listing_agents:
+            if la["listing_id"] == listing["id"]:
+                agent_id = la["agent_id"]
+                break
+
+        agent = next((a for a in agents if a["id"] == agent_id), None)
+
+        property_address = listing.get("address", "N/A")
+        mls_id = listing.get("mls_number", "N/A")
+
+        agent_name = agent.get("name", "N/A") if agent else "N/A"
+        agent_phone = agent.get("phone", "N/A") if agent else "N/A"
+
+        #test
+        print("MLS entered:", mls_id)
+        print("Listing found:", listing)
+        print("Agent found:", agent)
 
         # TODO: These will come from API integration
         list_price = 400000  # Placeholder
@@ -141,11 +182,16 @@ def generate_pdf(request):
 
         context = {
             "mls_id": mls_id,
+            "property_address": property_address,
+            "agent_name": agent_name,
+            "agent_phone": agent_phone,
+
             "rate": rate * 100,  # Convert back to percentage for display
             "insurance_type": insurance_type,
             "list_price": list_price,
             "dp_scenarios": dp_scenarios,
             "mortgage_scenarios": mortgage_scenarios,
+
             "uploaded_pic_data": uploaded_pic_data,
             "css_path": css_path,
             "images": images,

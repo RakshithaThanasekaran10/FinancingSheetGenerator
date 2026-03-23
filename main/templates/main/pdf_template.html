@@ -174,9 +174,9 @@ table.mortgage-table td:first-child {
             </td>
             <td style="vertical-align: top;">
                 <div style="font-size:18px; font-weight:bold;">
-                    326 LAKESHORE ROAD
+                    {{ property_address }}
                 </div>
-                <div>Niagara-on-the-Lake, Ontario</div>
+<!--                <div>Niagara-on-the-Lake, Ontario</div>-->
             </td>
         </tr>
         </table>
@@ -193,9 +193,9 @@ table.mortgage-table td:first-child {
                 <img src="{{ images.defaultAgent }}" width="55" height="55">
             </td>
             <td style="vertical-align: top;">
-                <strong>Johnny MacDonald</strong><br>
-                Salesperson<br>
-                (905) 650-6633
+                <strong>{{ agent_name }}</strong><br>
+                Agent<br>
+                {{ agent_phone }}
             </td>
         </tr>
 
