@@ -136,6 +136,7 @@ def generate_pdf(request):
             "brx": "/static/img/Copy of BRX Logo_ON_Black Transparent.png",
             "HaickLogo": "/static/img/Copy of recent logo.png",
             "defaultAgent": "/static/img/default.png",
+            "defaultHouse": "/static/img/PropertyPlaceholder.png",
         }
 
         context = {
