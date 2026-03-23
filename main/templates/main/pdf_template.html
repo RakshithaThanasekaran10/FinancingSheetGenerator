@@ -223,76 +223,71 @@ table.mortgage-table td:first-child {
 <table class="mortgage-table">
 <tr>
     <th>CATEGORIES</th>
-    <th class="option-header">OPTION 1</th>
-    <th class="option-header">OPTION 2</th>
-    <th class="option-header">OPTION 3</th>
+    {% for dp in dp_scenarios %}
+        <th class="option-header">OPTION {{ forloop.counter }}</th>
+    {% endfor %}
 </tr>
 
 <tr>
     <td>Home Price</td>
-    <td>$1,299,900</td>
-    <td>$1,299,900</td>
-    <td>$1,299,900</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.list_price|floatformat:0 }}</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Down Payment %</td>
-    <td>8.08%</td>
-    <td>10.00%</td>
-    <td>15.00%</td>
+    {% for dp in dp_scenarios %}
+        <td>{{ dp|floatformat:2 }}%</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Down Payment</td>
-    <td>$104,990</td>
-    <td>$129,990</td>
-    <td>$194,985</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.down_payment|floatformat:0 }}</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Mortgage Insurance</td>
-    <td>$47,796</td>
-    <td>$36,267</td>
-    <td>$30,938</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.mortgage_insurance_fee|floatformat:0 }}</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Mortgage Amount</td>
-    <td>$1,242,706</td>
-    <td>$1,206,177</td>
-    <td>$1,135,853</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>${{ scenario.total_mortgage_insurance|floatformat:0 }}</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Rate</td>
-    <td>3.99%</td>
-    <td>3.99%</td>
-    <td>3.99%</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>{{ rate|floatformat:2 }}%</td>
+    {% endfor %}
 </tr>
-<tr>
-    <td>APR</td>
-    <td>3.990%</td>
-    <td>3.990%</td>
-    <td>3.990%</td>
-</tr>
+
 <tr>
     <td>Term</td>
-    <td>5 Years Fixed</td>
-    <td>5 Years Fixed</td>
-    <td>5 Years Fixed</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>5 Years Fixed</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Amortization</td>
-    <td>25 Years</td>
-    <td>25 Years</td>
-    <td>25 Years</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>{% if insurance_type == 2 %}30{% else %}25{% endif %} Years</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Payment Frequency</td>
-    <td>Monthly</td>
-    <td>Monthly</td>
-    <td>Monthly</td>
+    {% for scenario in mortgage_scenarios %}
+        <td>Monthly</td>
+    {% endfor %}
 </tr>
 <tr>
     <td>Payment Amount</td>
-    <td class="payment">$6,530.15</td>
-    <td class="payment">$6,338.20</td>
-    <td class="payment">$5,968.66</td>
+    {% for scenario in mortgage_scenarios %}
+        <td class="payment">${{ scenario.monthly_mortgage|floatformat:2 }}</td>
+    {% endfor %}
 </tr>
 </table>
 
