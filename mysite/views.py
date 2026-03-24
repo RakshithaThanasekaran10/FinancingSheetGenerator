@@ -124,16 +124,18 @@ def generate_pdf(request):
 
         agent = next((a for a in agents if a["id"] == agent_id), None)
 
-        property_address = listing.get("address", "N/A")
+        property_address = listing.get("property_address_full", "N/A")
         mls_id = listing.get("mls_number", "N/A")
 
         agent_name = agent.get("name", "N/A") if agent else "N/A"
-        agent_phone = agent.get("phone", "N/A") if agent else "N/A"
+        agent_position = agent.get("position", "N/A") if agent else "N/A"
+        agent_phone = agent.get("agent_phone_primary", "N/A") if agent else "N/A"
 
         #test
         print("MLS entered:", mls_id)
         print("Listing found:", listing)
         print("Agent found:", agent)
+        print("Agent position value:", agent_position)
 
         # Get values from API listing
         list_price = listing.get("property_price_unformatted", 400000)
@@ -185,6 +187,7 @@ def generate_pdf(request):
             "property_address": property_address,
             "agent_name": agent_name,
             "agent_phone": agent_phone,
+            "agent_position": agent_position,
 
             "rate": rate * 100,  # Convert back to percentage for display
             "insurance_type": insurance_type,
