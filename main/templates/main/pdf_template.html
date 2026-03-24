@@ -170,7 +170,7 @@ table.mortgage-table td:first-child {
         <table>
         <tr>
             <td width="130" style="vertical-align: top;">
-                <img src="{{ images.defaultHouse }}" width="120" height="120">
+                <img src="{% if uploaded_pic_data %}{{ uploaded_pic_data }}{% else %}{{ images.defaultHouse }}{% endif %}" width="150" height="120">
             </td>
             <td style="vertical-align: top;">
                 <div style="font-size:18px; font-weight:bold;">
@@ -205,7 +205,7 @@ table.mortgage-table td:first-child {
             </td>
             <td style="vertical-align: top;">
                 <strong>Kelly Haick</strong><br>
-                Mortgage Agent Level 2<br>
+                Mortgage Broker<br>
                 (289) 302-2211
             </td>
         </tr>
