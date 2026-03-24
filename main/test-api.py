@@ -119,12 +119,9 @@ def get_agent_from_mls(mls_number):
         if str(listing_agent.get("listing_id")) == str(listing_id):
             agent_id = listing_agent.get("agent_id")
         
-    print("Agent ID: ", agent_id)
-
     result = {}
     for agent in agents:
         if str(agent.get("id")) == str(agent_id):
-            print("Agent Name: ", agent.get("name"))
             result["Name"] = agent.get("name")
             result["Position"] = agent.get("position")
             result["Phone"] = agent.get("agent_phone_primary")
