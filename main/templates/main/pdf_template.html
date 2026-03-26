@@ -32,12 +32,9 @@ body {
 }
 .property-image {
     width: 120px;
-    height: 90px;
+    height: 120px;
     border: 1px solid #ccc;
-}
-.property-image img {
-    width: 120px;
-    height: 90px;
+    object-fit: cover; /* keeps images contained and cropped to fit */
 }
 
 /* Property info */
@@ -61,6 +58,7 @@ body {
     width: 55px;
     height: 55px;
     border: 1px solid #ddd;
+    object-fit: cover;
 }
 
 /* Title */
@@ -128,6 +126,7 @@ table.mortgage-table td:first-child {
 .qr-image img {
     width: 80px;
     height: 80px;
+    object-fit: contain;
 }
 .qr-text {
     font-size: 12px;
@@ -138,15 +137,11 @@ table.mortgage-table td:first-child {
 
 <body>
 
-<!-- Date and MLS -->
+<!-- Header: Date & MLS -->
 <table width="100%" style="margin-bottom: 5px;" cellspacing="0" cellpadding="0">
 <tr>
-    <td class="header" style="text-align: left;">
-        {{ current_date }}
-    </td>
-    <td class="header" style="text-align: right;">
-        MLS Number: {{ mls_id }}
-    </td>
+    <td class="header" style="text-align: left;">{{ current_date }}</td>
+    <td class="header" style="text-align: right;">MLS Number: {{ mls_id }}</td>
 </tr>
 </table>
 
@@ -157,7 +152,7 @@ table.mortgage-table td:first-child {
 </tr>
 </table>
 
-<!-- Contacts + property -->
+<!-- Property + Contacts -->
 <table width="100%" style="margin-bottom: 15px;" cellspacing="0" cellpadding="0">
 <tr>
     <!-- LEFT: Property -->
@@ -166,15 +161,13 @@ table.mortgage-table td:first-child {
         <tr>
             <td width="130" style="vertical-align: top;">
                 {% if uploaded_pic_data %}
-                    <img src="{{ uploaded_pic_data }}" width="120" height="120">
+                    <img src="{{ uploaded_pic_data }}" class="property-image" alt="Property Image">
                 {% else %}
-                    <img src="{{ images.kelly }}" width="120" height="120">
+                    <img src="{{ images.kelly }}" class="property-image" alt="Property Image">
                 {% endif %}
             </td>
             <td style="vertical-align: top;">
-                <div style="font-size:18px; font-weight:bold;">
-                    326 LAKESHORE ROAD
-                </div>
+                <div style="font-size:18px; font-weight:bold;">326 LAKESHORE ROAD</div>
                 <div>Niagara-on-the-Lake, Ontario</div>
             </td>
         </tr>
@@ -209,6 +202,7 @@ table.mortgage-table td:first-child {
 </tr>
 </table>
 
+<!-- Mortgage Title -->
 <div class="scenario-title">Mortgage Scenarios</div>
 
 <!-- Mortgage Table -->
@@ -222,7 +216,7 @@ table.mortgage-table td:first-child {
 <tr>
     <td>Type</td>
     {% for scenario in mortgage_scenarios %}
-        <td>{%if insurance_type == 0%}Insured {%elif insurance_type == 1%}Insurable {%elif insurance_type == 2%}Uninsured {%endif%}</td>
+        <td>{% if insurance_type == 0 %}Insured{% elif insurance_type == 1 %}Insurable{% else %}Uninsured{% endif %}</td>
     {% endfor %}
 </tr>
 <tr>
@@ -287,6 +281,7 @@ table.mortgage-table td:first-child {
 </tr>
 </table>
 
+<!-- Footer -->
 <div class="footer">
 The calculations and estimated results in this report provide general information and are not intended as financial advice. The results are used for
 illustrative purposes and are subject to change without notice. This report simply gives you a good idea of your mortgage payments, costs and potential
@@ -294,7 +289,7 @@ savings. Actual mortgage premiums, payment information and others payable are su
 lender.
 </div>
 
-<!-- QR Code Section -->
+<!-- QR Code + BRX -->
 <div class="qr-section">
     <table class="qr-table">
         <tr>
