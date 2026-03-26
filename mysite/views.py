@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.loader import get_template
-from xhtml2pdf import pisa
+from weasyprint import HTML, CSS
 import os
 from django.conf import settings
 from django.contrib.staticfiles import finders
@@ -90,19 +90,15 @@ def generate_pdf(request):
             "current_date": date.today(),
         }
 
-        html = template.render(context)
+        html_string = template.render(context)
 
         response = HttpResponse(content_type="application/pdf")
         response["Content-Disposition"] = "inline; filename=finance_sheet.pdf"
 
-        pisa_status = pisa.CreatePDF(
-            html,
-            dest=response,
-            link_callback=link_callback
+        # Use WeasyPrint instead of xhtml2pdf
+        HTML(string=html_string, base_url=settings.BASE_DIR).write_pdf(
+            response, stylesheets=[CSS(css_path)]
         )
-
-        if pisa_status.err:
-            return HttpResponse("Error generating PDF")
 
         return response
 
