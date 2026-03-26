@@ -131,7 +131,6 @@ table.mortgage-table td:first-child {
 }
 .qr-text {
     font-size: 12px;
-    /*padding-left: 5px;*/
     font-weight: bold;
 }
 </style>
@@ -139,14 +138,12 @@ table.mortgage-table td:first-child {
 
 <body>
 
+<!-- Date and MLS -->
 <table width="100%" style="margin-bottom: 5px;" cellspacing="0" cellpadding="0">
 <tr>
-    <!-- LEFT: Date -->
     <td class="header" style="text-align: left;">
         {{ current_date }}
     </td>
-
-    <!-- RIGHT: MLS number -->
     <td class="header" style="text-align: right;">
         MLS Number: {{ mls_id }}
     </td>
@@ -163,14 +160,16 @@ table.mortgage-table td:first-child {
 <!-- Contacts + property -->
 <table width="100%" style="margin-bottom: 15px;" cellspacing="0" cellpadding="0">
 <tr>
-
     <!-- LEFT: Property -->
     <td width="50%" style="vertical-align: top;">
-
         <table>
         <tr>
             <td width="130" style="vertical-align: top;">
-                <img src="{{ images.kelly }}" width="120" height="120">
+                {% if uploaded_pic_data %}
+                    <img src="{{ uploaded_pic_data }}" width="120" height="120">
+                {% else %}
+                    <img src="{{ images.kelly }}" width="120" height="120">
+                {% endif %}
             </td>
             <td style="vertical-align: top;">
                 <div style="font-size:18px; font-weight:bold;">
@@ -180,14 +179,11 @@ table.mortgage-table td:first-child {
             </td>
         </tr>
         </table>
-
     </td>
 
     <!-- RIGHT: Contacts -->
     <td width="50%" style="vertical-align: top;">
-
         <table width="100%">
-
         <tr>
             <td width="60" style="vertical-align: top;">
                 <img src="{{ images.defaultAgent }}" width="55" height="55">
@@ -198,7 +194,6 @@ table.mortgage-table td:first-child {
                 (905) 650-6633
             </td>
         </tr>
-
         <tr>
             <td width="60" style="vertical-align: top;">
                 <img src="{{ images.kelly }}" width="55" height="55">
@@ -209,11 +204,8 @@ table.mortgage-table td:first-child {
                 (289) 302-2211
             </td>
         </tr>
-
         </table>
-
     </td>
-
 </tr>
 </table>
 
@@ -269,7 +261,6 @@ table.mortgage-table td:first-child {
         <td>{{ rate|floatformat:2 }}%</td>
     {% endfor %}
 </tr>
-
 <tr>
     <td>Term</td>
     {% for scenario in mortgage_scenarios %}
@@ -296,7 +287,6 @@ table.mortgage-table td:first-child {
 </tr>
 </table>
 
-
 <div class="footer">
 The calculations and estimated results in this report provide general information and are not intended as financial advice. The results are used for
 illustrative purposes and are subject to change without notice. This report simply gives you a good idea of your mortgage payments, costs and potential
@@ -308,31 +298,18 @@ lender.
 <div class="qr-section">
     <table class="qr-table">
         <tr>
-            <!-- QR Code -->
             <td class="qr-image" width="90" style="text-align: left;">
                 <img src="{{ images.qrcode }}" alt="QR Code">
             </td>
-
-            <!-- Text -->
             <td class="qr-text">
                 Download the Canadian Mortgage App!
             </td>
-            
-            <!-- BRX Logo -->
             <td class="qr-image" width="100" style="text-align: right;">
                 <img src="{{ images.brx }}" alt="BRX Logo">
             </td>
         </tr>
     </table>
 </div>
-
-<!-- Bottom bar
-<table width="100%" cellspacing="0" cellpadding="0">
-<tr>
-    <td style="background-color: #0cc0df; height: 10px;">&nbsp;</td>
-</tr>
-</table>
--->
 
 </body>
 </html>
