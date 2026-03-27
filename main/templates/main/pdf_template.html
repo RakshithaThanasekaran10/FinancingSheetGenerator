@@ -31,10 +31,9 @@ body {
     padding: 5px;
 }
 .property-image {
-    width: 120px;
-    height: 120px;
-    border: 1px solid #ccc;
-    object-fit: cover; /* keeps images contained and cropped to fit */
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 /* Property info */
@@ -174,11 +173,13 @@ table.mortgage-table td:first-child {
         <table>
         <tr>
             <td width="130" style="vertical-align: top;">
-                {% if uploaded_pic_data %}
-                    <img src="{{ uploaded_pic_data }}" class="property-image" alt="Property Image">
-                {% else %}
-                    <img src="{{ images.kelly }}" class="property-image" alt="Property Image">
-                {% endif %}
+                <div style="width:120px; height:120px; overflow:hidden; border:1px solid #ccc;">
+                    {% if uploaded_pic_data %}
+                        <img src="{{ uploaded_pic_data }}" class="property-image" alt="Property Image">
+                    {% else %}
+                        <img src="{{ images.kelly }}" class="property-image" alt="Property Image">
+                    {% endif %}
+                </div>
             </td>
             <td style="vertical-align: top;">
                 <div style="font-size:18px; font-weight:bold;">326 LAKESHORE ROAD</div>
