@@ -24,7 +24,7 @@ def get_financing_data(mls_id, rate_percent, insurance_type):
     -- should ret dict of all data for preview and pdf gen"""
 
      # Placeholder values (same as PDF generation)
-    list_price, est_property_fees, est_condo_fees, est_heat_cost = 400000, 426, 0, 100
+    list_price, est_property_fees, est_condo_fees, est_heat_cost = 400000, 0, 0, 0
     list_address, agent_name, agent_phone, agent_id = "Unknown Address", "Unknown Agent", "Unknown Phone", ""
 
     # use cache to keep data from preview in case thats used before pdf gen 
