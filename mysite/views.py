@@ -55,10 +55,24 @@ def get_financing_data(mls_id, rate_percent, insurance_type):
     if listing:
         print(f"--- DEBUG: SUCCESS! Found price: {listing.get('property_price_unformatted')} ---")
         
+        listing_agents = get_listing_agent() or []
+        agents = get_agents() or []
+
+        entry = next((a for a in listing_agents if a.get('listing_id') == listing.get('id')), None)
+        agent = None
+        if entry:
+            agent = next((a for a in agents if a.get('id') == entry.get('agent_id')), None)
+
         list_address = listing.get('property_address_full', 'Unknown Address')
-        agent_name = listing.get('agent_name', 'Unknown Agent')
-        agent_phone = listing.get('agent_phone', 'Unknown Phone')
-        agent_id = listing.get('agent_id')
+
+        if agent:
+            agent_name = agent.get('name', 'Unknown Agent')
+            agent_phone = agent.get('agent_phone_primary', 'Unknown Phone')
+            agent_id = agent.get('position')
+        else: 
+            agent_name = "N/A"
+            agent_phone = ""
+            agent_id = ""
 
         list_price = listing.get('property_price_unformatted', list_price)
         est_property_fees = listing.get('est_property_fees', est_property_fees)
