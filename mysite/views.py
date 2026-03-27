@@ -69,10 +69,12 @@ def get_financing_data(mls_id, rate_percent, insurance_type):
             agent_name = agent.get('name', 'Unknown Agent')
             agent_phone = agent.get('agent_phone_primary', 'Unknown Phone')
             agent_id = agent.get('position')
+            agent_photo = agent.get('photo_url')
         else: 
             agent_name = "N/A"
             agent_phone = ""
             agent_id = ""
+            agent_photo = None
 
         list_price = listing.get('property_price_unformatted', list_price)
         est_property_fees = listing.get('est_property_fees', est_property_fees)
@@ -104,6 +106,7 @@ def get_financing_data(mls_id, rate_percent, insurance_type):
             "agent_name": agent_name,
             "agent_phone": agent_phone,
             "agent_id": agent_id,
+            "agent_photo": agent_photo,
         },
         "list_price": list_price,
         "dp_scenarios": dp_scenarios,

@@ -193,7 +193,11 @@ table.mortgage-table td:first-child {
         <table>
         <tr>
             <td width="60" style="vertical-align: top;">
-                <img src="{{ images.defaultAgent }}" class="contact-agent-image" alt="Agent Image">
+                {% if property_info.agent_photo %}
+                    <img src="{{ property_info.agent_photo }}" class="contact-agent-image" alt="Agent Image">
+                {% else %}
+                    <img src="{{ images.defaultAgent }}" class="contact-agent-image" alt="Agent Image">
+                {% endif %}
             </td>
             <td style="vertical-align: top;">
                 <strong>{{property_info.agent_name}}</strong><br>
