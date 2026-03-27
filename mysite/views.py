@@ -32,28 +32,22 @@ def get_financing_data(mls_id, rate_percent, insurance_type):
     cached_listing = cache.get(cache_key)
 
     if cached_listing:
-        print(f"--- DEBUG: Using cached data for MLS {mls_id} ---")
+        #print(f"--- DEBUG: Using cached data for MLS {mls_id} ---")
         listing = cached_listing
     else:
-        print(f"--- DEBUG: No cached data for MLS {mls_id}. Fetching from Xano... ---")
+        #print(f"--- DEBUG: No cached data for MLS {mls_id}. Fetching from Xano... ---")
         listings = get_listings() or []
         listing = next((l for l in listings if str(l.get('mls_number')) == str(mls_id)), None)
         if listing:
             cache.set(cache_key, listing, timeout=300)  # Cache for 5 minutes
-            print(f"--- DEBUG: Caching data for MLS {mls_id} ---")
+            #print(f"--- DEBUG: Caching data for MLS {mls_id} ---")
         
    
     rate = float(rate_percent or 0) / 100  # Convert percentage to decimal
     insurance_type = int(insurance_type or 0)
 
-    # #get data from xano 
-    # print(f"--- DEBUG: Searching for MLS: {mls_id} ---")
-    # listings = get_listings() or []  # Ensure we have a list even if API call fails
-    # print(f"--- DEBUG: Total listings fetched from Xano: {len(listings)} ---")
-    # listing = next((l for l in listings if str(l.get('mls_number')) == str(mls_id)), None)
-
     if listing:
-        print(f"--- DEBUG: SUCCESS! Found price: {listing.get('property_price_unformatted')} ---")
+        #print(f"--- DEBUG: SUCCESS! Found price: {listing.get('property_price_unformatted')} ---")
         
         listing_agents = get_listing_agent() or []
         agents = get_agents() or []
