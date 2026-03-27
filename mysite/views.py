@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
 from weasyprint import HTML, CSS
 from pathlib import Path
@@ -9,12 +9,57 @@ from mysite.utils import get_down_payment_scenarios, calculate_mortgage_summary
 import base64
 
 
+
 def to_file_uri(path):
     return Path(path).resolve().as_uri()
 
 
 def home(request):
     return render(request, "main/home.html")
+
+
+def get_preview_data(request):
+    """AJAX endpoint to get preview data for live calculations"""
+    if request.method != "GET":
+        return JsonResponse({"error": "Method not allowed"}, status=405)
+
+    try:
+        # Get parameters from query string
+        rate = float(request.GET.get("rate", 0)) / 100  # Convert percentage to decimal
+        insurance_type = int(request.GET.get("insurance_type", 0))
+
+        # Placeholder values (same as PDF generation)
+        list_price = 400000
+        est_property_fees = 426
+        est_condo_fees = 0
+        est_heat_cost = 100
+
+        # Down payment & mortgage calculations
+        dp_scenarios = get_down_payment_scenarios(list_price)
+        mortgage_scenarios = []
+        for dp_percent in dp_scenarios:
+            summary = calculate_mortgage_summary(
+                list_price=list_price,
+                down_payment_percentage=dp_percent,
+                rate=rate,
+                est_property_fees=est_property_fees,
+                est_condo_fees=est_condo_fees,
+                est_heat_cost=est_heat_cost,
+                insurance_type=insurance_type
+            )
+            mortgage_scenarios.append(summary)
+
+        return JsonResponse({
+            "list_price": list_price,
+            "dp_scenarios": dp_scenarios,
+            "mortgage_scenarios": mortgage_scenarios,
+            "rate": rate * 100,  # Convert back to percentage for display
+            "insurance_type": insurance_type
+        })
+
+    except (ValueError, TypeError) as e:
+        return JsonResponse({"error": str(e)}, status=400)
+
 
 def generate_pdf(request):
     if request.method != "POST":
