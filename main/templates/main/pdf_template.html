@@ -31,9 +31,12 @@ body {
     padding: 5px;
 }
 .property-image {
-    width: 100%;
-    height: auto;
-    display: block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    transform: translate(-50%, -50%);
 }
 
 /* Property info */
@@ -173,7 +176,7 @@ table.mortgage-table td:first-child {
         <table>
         <tr>
             <td width="130" style="vertical-align: top;">
-                <div style="width:120px; height:120px; overflow:hidden; border:1px solid #ccc;">
+                <div style="width:120px; height:120px; overflow:hidden; border:1px solid #ccc; position: relative;">
                     {% if uploaded_pic_data %}
                         <img src="{{ uploaded_pic_data }}" class="property-image" alt="Property Image">
                     {% else %}
