@@ -9,6 +9,7 @@ from datetime import date
 from mysite.utils import get_down_payment_scenarios, calculate_mortgage_summary
 import base64
 from .test_api import get_agents, get_listings, get_listing_agent, get_listing_open_house, get_organization
+from django.core.cache import cache
 
 def to_file_uri(path):
     return Path(path).resolve().as_uri()
@@ -21,29 +22,52 @@ def home(request):
 def get_financing_data(mls_id, rate_percent, insurance_type):
     """Helper function to get financing data for PDF generation and AJAX preview
     -- should ret dict of all data for preview and pdf gen"""
-    # Placeholder values (same as PDF generation)
-    list_price = 400000
-    est_property_fees = 426
-    est_condo_fees = 0
-    est_heat_cost = 100
 
+     # Placeholder values (same as PDF generation)
+    list_price, est_property_fees, est_condo_fees, est_heat_cost = 400000, 426, 0, 100
+    list_address, agent_name, agent_phone, agent_id = "Unknown Address", "Unknown Agent", "Unknown Phone", ""
+
+    # use cache to keep data from preview in case thats used before pdf gen 
+    cache_key = f"fin_data_{mls_id}"
+    cached_listing = cache.get(cache_key)
+
+    if cached_listing:
+        print(f"--- DEBUG: Using cached data for MLS {mls_id} ---")
+        listing = cached_listing
+    else:
+        print(f"--- DEBUG: No cached data for MLS {mls_id}. Fetching from Xano... ---")
+        listings = get_listings() or []
+        listing = next((l for l in listings if str(l.get('mls_number')) == str(mls_id)), None)
+        if listing:
+            cache.set(cache_key, listing, timeout=300)  # Cache for 5 minutes
+            print(f"--- DEBUG: Caching data for MLS {mls_id} ---")
+        
+   
     rate = float(rate_percent or 0) / 100  # Convert percentage to decimal
     insurance_type = int(insurance_type or 0)
 
-    #get data from xano 
-    print(f"--- DEBUG: Searching for MLS: {mls_id} ---")
-    listings = get_listings() or []  # Ensure we have a list even if API call fails
-    print(f"--- DEBUG: Total listings fetched from Xano: {len(listings)} ---")
-    listing = next((l for l in listings if str(l.get('mls_number')) == str(mls_id)), None)
+    # #get data from xano 
+    # print(f"--- DEBUG: Searching for MLS: {mls_id} ---")
+    # listings = get_listings() or []  # Ensure we have a list even if API call fails
+    # print(f"--- DEBUG: Total listings fetched from Xano: {len(listings)} ---")
+    # listing = next((l for l in listings if str(l.get('mls_number')) == str(mls_id)), None)
 
     if listing:
         print(f"--- DEBUG: SUCCESS! Found price: {listing.get('property_price_unformatted')} ---")
+        
+        list_address = listing.get('property_address_full', 'Unknown Address')
+        agent_name = listing.get('agent_name', 'Unknown Agent')
+        agent_phone = listing.get('agent_phone', 'Unknown Phone')
+        agent_id = listing.get('agent_id')
+
         list_price = listing.get('property_price_unformatted', list_price)
         est_property_fees = listing.get('est_property_fees', est_property_fees)
         est_condo_fees = listing.get('est_condo_fees', est_condo_fees)
         est_heat_cost = listing.get('est_heat_cost', est_heat_cost)
+
     else:
         print(f"MLS ID {mls_id} not found in listings. Using default values.") 
+        list_price, est_property_fees, est_condo_fees, est_heat_cost = 333333, 0, 0, 0
 
     # Down payment & mortgage calculations
     dp_scenarios = get_down_payment_scenarios(list_price)
@@ -61,6 +85,12 @@ def get_financing_data(mls_id, rate_percent, insurance_type):
         mortgage_scenarios.append(summary)
 
     return {
+        "property_info": {
+            "address": list_address,
+            "agent_name": agent_name,
+            "agent_phone": agent_phone,
+            "agent_id": agent_id,
+        },
         "list_price": list_price,
         "dp_scenarios": dp_scenarios,
         "mortgage_scenarios": mortgage_scenarios,
@@ -89,35 +119,14 @@ def generate_pdf(request):
     if request.method != "POST":
         return HttpResponse("Invalid request", status=400)
 
-    #fin_data = get_financing_data(
-
     mls_id = request.POST.get("mls", "")
     rate = float(request.POST.get("rate", 0)) / 100  # Convert percentage to decimal
     insurance_type = int(request.POST.get("insurance_type", 0))
     property_pic = request.FILES.get("property_pic")
 
-    # Placeholder values
-    list_price = 400000
-    est_property_fees = 426
-    est_condo_fees = 0
-    est_heat_cost = 100
+    rate_from_post = request.POST.get("rate", "0")
+    fin_data = get_financing_data(mls_id, float(rate_from_post), insurance_type)  # Pass rate as percentage for display
 
-    # Down payment & mortgage calculations
-    dp_scenarios = get_down_payment_scenarios(list_price)
-    mortgage_scenarios = []
-    for dp_percent in dp_scenarios:
-        summary = calculate_mortgage_summary(
-            list_price=list_price,
-            down_payment_percentage=dp_percent,
-            rate=rate,
-            est_property_fees=est_property_fees,
-            est_condo_fees=est_condo_fees,
-            est_heat_cost=est_heat_cost,
-            insurance_type=insurance_type
-        )
-        mortgage_scenarios.append(summary)
-
-    # Inline uploaded property picture
     uploaded_pic_data = None
     if property_pic:
         try:
@@ -127,7 +136,8 @@ def generate_pdf(request):
             )
         except Exception:
             uploaded_pic_data = None
-
+    
+    
     # Absolute paths to static images for WeasyPrint (as file:// URIs)
     static_img_path = Path(settings.BASE_DIR) / 'main' / 'static' / 'img'
     images = {
@@ -137,17 +147,19 @@ def generate_pdf(request):
         "HaickLogo": to_file_uri(static_img_path / 'Copy of recent logo.png'),
         "defaultAgent": to_file_uri(static_img_path / 'default.png'),
     }
+ 
 
     template = get_template("main/pdf_template.html")
     css_path = str(Path(settings.BASE_DIR) / 'main' / 'static' / 'pdf_design.css')
 
     context = {
         "mls_id": mls_id,
-        "rate": rate * 100,  # Convert back to percentage for display
+        "property_info": fin_data["property_info"],
+        "rate": fin_data["rate"],  # Convert back to percentage for display
         "insurance_type": insurance_type,
-        "list_price": list_price,
-        "dp_scenarios": dp_scenarios,
-        "mortgage_scenarios": mortgage_scenarios,
+        "list_price": fin_data["list_price"],
+        "dp_scenarios": fin_data["dp_scenarios"],
+        "mortgage_scenarios": fin_data["mortgage_scenarios"],
         "uploaded_pic_data": uploaded_pic_data,
         "css_path": css_path,
         "images": images,
