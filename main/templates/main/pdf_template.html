@@ -185,8 +185,8 @@ table.mortgage-table td:first-child {
                 </div>
             </td>
             <td style="vertical-align: top;">
-                <div style="font-size:18px; font-weight:bold;">326 LAKESHORE ROAD</div>
-                <div>Niagara-on-the-Lake, Ontario</div>
+                <div style="font-size:18px; font-weight:bold;">{{property_info.address |upper}}</div>
+                <div></div>
             </td>
         </tr>
         </table>
@@ -197,12 +197,16 @@ table.mortgage-table td:first-child {
         <table>
         <tr>
             <td width="60" style="vertical-align: top;">
-                <img src="{{ images.defaultAgent }}" class="contact-agent-image" alt="Agent Image">
+                {% if property_info.agent_photo %}
+                    <img src="{{ property_info.agent_photo }}" class="contact-agent-image" alt="Agent Image">
+                {% else %}
+                    <img src="{{ images.defaultAgent }}" class="contact-agent-image" alt="Agent Image">
+                {% endif %}
             </td>
             <td style="vertical-align: top;">
-                <strong>Johnny MacDonald</strong><br>
-                Salesperson<br>
-                (905) 650-6633
+                <strong>{{property_info.agent_name}}</strong><br>
+                {{property_info.agent_id}}<br>
+                {{property_info.agent_phone}}
             </td>
         </tr>
         <tr>
@@ -240,7 +244,7 @@ table.mortgage-table td:first-child {
 <tr>
     <td>Home Price</td>
     {% for scenario in mortgage_scenarios %}
-        <td>${{ scenario.list_price|floatformat:0 }}</td>
+        <td>${{ list_price|floatformat:0 }}</td>
     {% endfor %}
 </tr>
 <tr>
