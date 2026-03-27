@@ -55,10 +55,24 @@ body {
     padding: 5px;
 }
 .contact-table img {
+    /* add to prevent from blowing up page*/
+    max-width: 55px;
+    max-height: 55px;
     width: 55px;
     height: 55px;
     border: 1px solid #ddd;
     object-fit: cover;
+}
+
+/* class for contact agent images */
+.contact-agent-image {
+    max-width: 55px;
+    max-height: 55px;
+    width: 55px;
+    height: 55px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+    display: block;
 }
 
 /* Title */
@@ -176,10 +190,10 @@ table.mortgage-table td:first-child {
 
     <!-- RIGHT: Contacts -->
     <td width="50%" style="vertical-align: top;">
-        <table width="100%">
+        <table>
         <tr>
             <td width="60" style="vertical-align: top;">
-                <img src="{{ images.defaultAgent }}" width="55" height="55">
+                <img src="{{ images.defaultAgent }}" class="contact-agent-image" alt="Agent Image">
             </td>
             <td style="vertical-align: top;">
                 <strong>Johnny MacDonald</strong><br>
@@ -189,7 +203,7 @@ table.mortgage-table td:first-child {
         </tr>
         <tr>
             <td width="60" style="vertical-align: top;">
-                <img src="{{ images.kelly }}" width="55" height="55">
+                <img src="{{ images.kelly }}" class="contact-agent-image" alt="Kelly Image">
             </td>
             <td style="vertical-align: top;">
                 <strong>Kelly Haick</strong><br>
