@@ -2,11 +2,16 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.template.loader import get_template
 from weasyprint import HTML, CSS
-import os
+from pathlib import Path
 from django.conf import settings
 from datetime import date
 from mysite.utils import get_down_payment_scenarios, calculate_mortgage_summary
 import base64
+
+
+def to_file_uri(path):
+    return Path(path).resolve().as_uri()
+
 
 def home(request):
     return render(request, "main/home.html")
@@ -52,18 +57,18 @@ def generate_pdf(request):
         except Exception:
             uploaded_pic_data = None
 
-    # Absolute paths to static images for WeasyPrint
-    static_img_path = os.path.join(settings.BASE_DIR, 'main', 'static', 'img')
+    # Absolute paths to static images for WeasyPrint (as file:// URIs)
+    static_img_path = Path(settings.BASE_DIR) / 'main' / 'static' / 'img'
     images = {
-        "kelly": os.path.join(static_img_path, '1.png'),
-        "qrcode": os.path.join(static_img_path, 'qr_code.png'),
-        "brx": os.path.join(static_img_path, 'Copy of BRX Logo_ON_Black Transparent.png'),
-        "HaickLogo": os.path.join(static_img_path, 'Copy of recent logo.png'),
-        "defaultAgent": os.path.join(static_img_path, 'default.png'),
+        "kelly": to_file_uri(static_img_path / '1.png'),
+        "qrcode": to_file_uri(static_img_path / 'qr_code.png'),
+        "brx": to_file_uri(static_img_path / 'Copy of BRX Logo_ON_Black Transparent.png'),
+        "HaickLogo": to_file_uri(static_img_path / 'Copy of recent logo.png'),
+        "defaultAgent": to_file_uri(static_img_path / 'default.png'),
     }
 
     template = get_template("main/pdf_template.html")
-    css_path = os.path.join(settings.BASE_DIR, 'main', 'static', 'pdf_design.css')
+    css_path = str(Path(settings.BASE_DIR) / 'main' / 'static' / 'pdf_design.css')
 
     context = {
         "mls_id": mls_id,
