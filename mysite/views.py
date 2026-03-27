@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.template.loader import get_template
+from requests import api
 from weasyprint import HTML, CSS
 from pathlib import Path
 from django.conf import settings
 from datetime import date
 from mysite.utils import get_down_payment_scenarios, calculate_mortgage_summary
 import base64
-
-
+from .test_api import get_agents, get_listings, get_listing_agent, get_listing_open_house, get_organization
 
 def to_file_uri(path):
     return Path(path).resolve().as_uri()
@@ -18,6 +18,56 @@ def home(request):
     return render(request, "main/home.html")
 
 
+def get_financing_data(mls_id, rate_percent, insurance_type):
+    """Helper function to get financing data for PDF generation and AJAX preview
+    -- should ret dict of all data for preview and pdf gen"""
+    # Placeholder values (same as PDF generation)
+    list_price = 400000
+    est_property_fees = 426
+    est_condo_fees = 0
+    est_heat_cost = 100
+
+    rate = float(rate_percent or 0) / 100  # Convert percentage to decimal
+    insurance_type = int(insurance_type or 0)
+
+    #get data from xano 
+    print(f"--- DEBUG: Searching for MLS: {mls_id} ---")
+    listings = get_listings() or []  # Ensure we have a list even if API call fails
+    print(f"--- DEBUG: Total listings fetched from Xano: {len(listings)} ---")
+    listing = next((l for l in listings if str(l.get('mls_number')) == str(mls_id)), None)
+
+    if listing:
+        print(f"--- DEBUG: SUCCESS! Found price: {listing.get('property_price_unformatted')} ---")
+        list_price = listing.get('property_price_unformatted', list_price)
+        est_property_fees = listing.get('est_property_fees', est_property_fees)
+        est_condo_fees = listing.get('est_condo_fees', est_condo_fees)
+        est_heat_cost = listing.get('est_heat_cost', est_heat_cost)
+    else:
+        print(f"MLS ID {mls_id} not found in listings. Using default values.") 
+
+    # Down payment & mortgage calculations
+    dp_scenarios = get_down_payment_scenarios(list_price)
+    mortgage_scenarios = []
+    for dp_percent in dp_scenarios:
+        summary = calculate_mortgage_summary(
+            list_price=list_price,
+            down_payment_percentage=dp_percent,
+            rate=rate,  # Convert percentage to decimal
+            est_property_fees=est_property_fees,
+            est_condo_fees=est_condo_fees,
+            est_heat_cost=est_heat_cost,
+            insurance_type=insurance_type
+        )
+        mortgage_scenarios.append(summary)
+
+    return {
+        "list_price": list_price,
+        "dp_scenarios": dp_scenarios,
+        "mortgage_scenarios": mortgage_scenarios,
+        "rate": rate * 100,  # Convert back to percentage for display
+        "insurance_type": insurance_type
+    }
+
 def get_preview_data(request):
     """AJAX endpoint to get preview data for live calculations"""
     if request.method != "GET":
@@ -25,38 +75,12 @@ def get_preview_data(request):
 
     try:
         # Get parameters from query string
-        rate = float(request.GET.get("rate", 0)) / 100  # Convert percentage to decimal
-        insurance_type = int(request.GET.get("insurance_type", 0))
-
-        # Placeholder values (same as PDF generation)
-        list_price = 400000
-        est_property_fees = 426
-        est_condo_fees = 0
-        est_heat_cost = 100
-
-        # Down payment & mortgage calculations
-        dp_scenarios = get_down_payment_scenarios(list_price)
-        mortgage_scenarios = []
-        for dp_percent in dp_scenarios:
-            summary = calculate_mortgage_summary(
-                list_price=list_price,
-                down_payment_percentage=dp_percent,
-                rate=rate,
-                est_property_fees=est_property_fees,
-                est_condo_fees=est_condo_fees,
-                est_heat_cost=est_heat_cost,
-                insurance_type=insurance_type
-            )
-            mortgage_scenarios.append(summary)
-
-        return JsonResponse({
-            "list_price": list_price,
-            "dp_scenarios": dp_scenarios,
-            "mortgage_scenarios": mortgage_scenarios,
-            "rate": rate * 100,  # Convert back to percentage for display
-            "insurance_type": insurance_type
-        })
-
+        data = get_financing_data(
+            request.GET.get("mls", ""),
+            request.GET.get("rate", "0"),
+            request.GET.get("insurance_type", "0")
+        )
+        return JsonResponse(data)
     except (ValueError, TypeError) as e:
         return JsonResponse({"error": str(e)}, status=400)
 
@@ -64,6 +88,8 @@ def get_preview_data(request):
 def generate_pdf(request):
     if request.method != "POST":
         return HttpResponse("Invalid request", status=400)
+
+    #fin_data = get_financing_data(
 
     mls_id = request.POST.get("mls", "")
     rate = float(request.POST.get("rate", 0)) / 100  # Convert percentage to decimal

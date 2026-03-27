@@ -42,6 +42,8 @@
             <input type="file" name="property_pic" id="property-pic" class="form-control" accept="image/*">
         </div>
 
+        <button type="button" id="update-preview" class="btn btn-secondary w-100 mb-3">Update Preview</button>
+
         <button type="submit" class="btn btn-primary w-100">Generate Financing Sheet PDF</button>
     </form>
 </div>
@@ -109,6 +111,26 @@
     const mortgagePreview = document.getElementById("mortgage-preview");
     const mortgageTableBody = document.getElementById("mortgage-table-body");
 
+    const updateBtn = document.getElementById("update-preview");
+
+    updateBtn.addEventListener("click", async () => {
+        const mls = mlsInput.value;
+        const rate = rateInput.value;
+        const ins = document.querySelector("input[name='insurance_type']:checked").value;
+
+        if(!mls || !rate) {
+            alert("Please enter both MLS number and mortgage rate to update the preview.");
+            return;
+        }
+
+        updateBtn.disabled = true; // Disable button to prevent multiple clicks
+        updateBtn.innerHTML = 'Updating...';
+        await fetchMortgageData(mls, rate, ins);
+        updateBtn.disabled = false; // Re-enable button
+        updateBtn.textContent = 'Update Preview'; // Reset button text
+    });
+
+    // Live update preview on input change
     function updatePreview() {
         previewMLS.textContent = mlsInput.value;
 
@@ -129,7 +151,61 @@
         // Update mortgage scenarios preview
         updateMortgagePreview();
     }
+    
+    async function fetchMortgageData(mls, rate, insuranceType) {
+        try {
+            const response = await fetch(`/get_preview_data/?mls=${mls}&rate=${rate}&insurance_type=${insuranceType}`);
+            const data = await response.json();
 
+            if (data.error) {
+                console.error('Preview error:', data.error);
+                return;
+            }
+
+            // Update option headers
+            data.dp_scenarios.forEach((dp, index) => {
+                const header = document.getElementById(`option-${index + 1}-header`);
+                if (header) {
+                    header.textContent = `Option ${index + 1}`;
+                }
+            });
+
+            // Build table rows
+            const rows = [
+                { label: 'Type', values: data.mortgage_scenarios.map(() =>
+                    data.insurance_type == 0 ? 'Insured' :
+                    data.insurance_type == 1 ? 'Insurable' : 'Uninsured'
+                )},
+                { label: 'Home Price', values: data.mortgage_scenarios.map(() => `$${data.list_price.toLocaleString()}`)},
+                { label: 'Down Payment %', values: data.dp_scenarios.map(dp => `${dp.toFixed(1)}%`)},
+                { label: 'Down Payment', values: data.mortgage_scenarios.map(s => `$${s.down_payment.toLocaleString()}`)},
+                { label: 'Mortgage Insurance', values: data.mortgage_scenarios.map(s => `$${s.mortgage_insurance_fee.toLocaleString()}`)},
+                { label: 'Mortgage Amount', values: data.mortgage_scenarios.map(s => `$${s.total_mortgage_insurance.toLocaleString()}`)},
+                { label: 'Rate', values: data.mortgage_scenarios.map(() => `${data.rate.toFixed(2)}%`)},
+                { label: 'Term', values: data.mortgage_scenarios.map(() => '5 Years Fixed')},
+                { label: 'Amortization', values: data.mortgage_scenarios.map(() =>
+                    data.insurance_type == 2 ? '30 Years' : '25 Years'
+                )},
+                { label: 'Payment Frequency', values: data.mortgage_scenarios.map(() => 'Monthly')},
+                { label: 'Payment Amount', values: data.mortgage_scenarios.map(s => `$${s.monthly_mortgage.toLocaleString()}`)},
+            ];
+
+            mortgageTableBody.innerHTML = rows.map(row => `
+                <tr>
+                    <td><strong>${row.label}</strong></td>
+                    ${row.values.map(value => `<td>${value}</td>`).join('')}
+                </tr>
+            `).join('');
+
+            mortgagePreview.style.display = 'block';
+        } catch (error) {
+            console.error('Error fetching mortgage data:', error);
+            alert('Failed to fetch mortgage data. Please check the console for details.');
+            return null;
+        }
+    }
+
+    /*
     async function updateMortgagePreview() {
         const rate = parseFloat(rateInput.value) || 0;
         const insuranceType = document.querySelector("input[name='insurance_type']:checked").value;
@@ -189,7 +265,7 @@
             mortgagePreview.style.display = 'none';
         }
     }
-
+    */
     mlsInput.addEventListener("input", updatePreview);
     rateInput.addEventListener("input", updatePreview);
     insuranceInputs.forEach(input => input.addEventListener("change", updatePreview));
